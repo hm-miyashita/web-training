@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>0からのホームページ作成研修 | トップ</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=2">
   <link rel="icon" href="assets/img/sakura.png">
 </head>
 <body>
@@ -48,6 +48,30 @@
             プログラミングが初めての方も、経験豊富なベテランの方も、それぞれのペースで進められるようになっているので、安心してついてきてくださいね!
           </div>
         </div>
+
+        <h2>受講の記録(まずはここから)</h2>
+        <p>日付とお名前を記入して「開始/再開する」ボタンを押してください。受講記録が「何月何日 名前」の形でテキストに記録されます。</p>
+        <p class="attendance-note">⚠️ 名前を記入しない場合、受講記録は記録されません。</p>
+        <div class="attendance">
+          <label>日付
+            <input type="date" id="att-date">
+          </label>
+          <label>名前
+            <input type="text" id="att-name" placeholder="例:山田太郎">
+          </label>
+          <button id="att-start">開始/再開する</button>
+        </div>
+        <p id="att-status" class="att-status"></p>
+        <p>途中で中断した場合も、次回ここで<strong>日付と名前を入力すれば続きの章から再開</strong>できます(同じ日付・同じ名前の記録が既にある場合、二重には記録されません)。</p>
+
+        <details class="admin-tools">
+          <summary>🔧 管理者向け:記録テキストの設定</summary>
+          <p>受講記録は「保存先フォルダ」内の <code>kenshu-log-1.txt</code> に1行ずつ追記され、<strong>500行に達すると自動的に <code>kenshu-log-2.txt</code> へ切り替わります</strong>。
+          最初に一度、保存先フォルダ(社内共有フォルダも可)を設定してください。未設定の場合、記録はこのブラウザ内に保存され、下のボタンで同じ形式のテキストとして取り出せます。</p>
+          <button id="att-folder" type="button">記録の保存先フォルダを設定</button>
+          <button id="att-download" type="button">記録テキストをダウンロード</button>
+          <p id="att-folder-status" class="att-folder-status"></p>
+        </details>
 
         <h2>この研修のゴール</h2>
         <ul>
@@ -192,6 +216,6 @@
     0からのホームページ作成研修 — 社内研修用教材
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js?v=2"></script>
 </body>
 </html>

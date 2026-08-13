@@ -626,6 +626,122 @@ tr:nth-child(even) td {
   font-size: 0.8rem;
 }
 
+/* ---- 受講記録(トップページ) ---- */
+.attendance {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.attendance label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--sakura-accent);
+}
+
+.attendance input {
+  padding: 9px 12px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.attendance input:focus {
+  outline: none;
+  border-color: var(--sakura-deep);
+}
+
+#att-start {
+  background: var(--sakura-deep);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 11px 28px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#att-start:hover {
+  background: var(--sakura-accent);
+}
+
+.attendance-note {
+  color: var(--ng);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.att-status {
+  display: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+}
+
+.att-status.ok {
+  display: block;
+  background: #e3f2e8;
+  border-left: 5px solid var(--ok);
+}
+
+.att-status.warn {
+  display: block;
+  background: #fdecec;
+  border-left: 5px solid var(--ng);
+  font-weight: 700;
+}
+
+.admin-tools {
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+  color: var(--ink-light);
+}
+
+.admin-tools summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-tools button {
+  background: #fff;
+  color: var(--sakura-accent);
+  border: 2px solid var(--sakura-deep);
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 6px 8px 4px 0;
+}
+
+.admin-tools button:hover {
+  background: var(--sakura-light);
+}
+
+.att-folder-status {
+  font-size: 0.82rem;
+}
+
+/* サイドバーの受講者名表示 */
+.sidebar-user {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--sakura-accent);
+  font-weight: 700;
+}
+
 /* ---- フッター ---- */
 .site-footer {
   text-align: center;
