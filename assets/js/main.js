@@ -26,10 +26,14 @@ const LAST_RECORD_DATE_KEY = "webTrainingLastRecordDate"; // 最後に記録し�
 const LINES_PER_FILE = 200;                        // 1テキストあたりの行数上限
 
 // ---- 受講者の読み書き ----
+// sessionStorage(タブを閉じると消える保存領域)を使うことで、
+// 「開始/再開する」を押した本人のセッション中だけ進捗が表示される。
+// 進捗データ自体は localStorage に名前ごとに残っているので、
+// 次回また名前を入力すれば同じところから再開できる。
 
 function getUser() {
   try {
-    return JSON.parse(localStorage.getItem(USER_KEY));
+    return JSON.parse(sessionStorage.getItem(USER_KEY));
   } catch (e) {
     return null;
   }
@@ -37,9 +41,9 @@ function getUser() {
 
 function setUser(user) {
   if (user) {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
   } else {
-    localStorage.removeItem(USER_KEY);
+    sessionStorage.removeItem(USER_KEY);
   }
 }
 
@@ -306,6 +310,22 @@ function refreshTopProgress() {
   const bar = document.querySelector(".progress-bar");
   if (!bar) return;
 
+  const user = getUser();
+  const label = document.querySelector(".progress-label");
+
+  // まだ「開始/再開する」を押していない(=受講者が確定していない)間は、
+  // 進捗バーも完了チェックも一切表示しない
+  if (!user || !user.name) {
+    bar.style.width = "0%";
+    if (label) {
+      label.textContent = "進捗:—(日付と名前を記入して「開始/再開する」を押すと表示されます)";
+    }
+    document.querySelectorAll(".chapter-card .done-mark").forEach(function (mark) {
+      mark.textContent = "";
+    });
+    return;
+  }
+
   const progress = loadProgress();
   const doneCount = CHAPTERS.filter(function (c) {
     return progress[c.file];
@@ -314,12 +334,9 @@ function refreshTopProgress() {
   const percent = Math.round((doneCount / CHAPTERS.length) * 100);
   bar.style.width = percent + "%";
 
-  const label = document.querySelector(".progress-label");
   if (label) {
-    const user = getUser();
-    const who = user && user.name ? user.name + "さんの" : "";
     label.textContent =
-      who + "進捗:" + doneCount + " / " + CHAPTERS.length + " 章 完了(" + percent + "%)";
+      user.name + "さんの進捗:" + doneCount + " / " + CHAPTERS.length + " 章 完了(" + percent + "%)";
   }
 
   // 完了済みの章カードにマークを付ける
