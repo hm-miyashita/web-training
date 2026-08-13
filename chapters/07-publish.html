@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 GitHubで公開 | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第7章 GitHubで公開</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第7章 GitHubで公開</h1>
+        <p class="lead">作ったサイトをインターネットに公開します。同時に、現場必須ツール「Git / GitHub」に入門します。</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            Gitは今や<strong>Web系に限らずほぼ全ての開発現場で使われる必須ツール</strong>です。
+            「常駐先で急にGitを使うことになった」はSESあるあるなので、この機会に基本操作を体に入れておきましょう。
+            おまけに、GitHubには<strong>無料でWebサイトを公開できる機能</strong>まで付いてくるんです!
+          </div>
+        </div>
+
+        <h2>7-1. Gitとは:セーブポイントを作れる仕組み <span class="badge basic">基礎</span></h2>
+        <p><strong>Git</strong>は「バージョン管理システム」。ファイルの変更履歴を<strong>セーブポイント(コミット)</strong>として記録し、いつでも過去の状態に戻れるようにする仕組みです。</p>
+        <ul>
+          <li>「動いていたのに、どこかいじったら壊れた」→ 直前のコミットに戻せる</li>
+          <li>「誰がいつ何を変えたか」→ 履歴が全部残る</li>
+          <li>複数人で同じファイルを編集しても、変更を合流(マージ)できる</li>
+        </ul>
+        <p><strong>GitHub</strong>は、Gitの履歴(リポジトリ)をインターネット上に置けるサービスです。バックアップ・共有・公開の拠点になります。</p>
+        <table>
+          <tr><th>用語</th><th>意味</th></tr>
+          <tr><td>リポジトリ</td><td>プロジェクト一式+全履歴が入った保管庫</td></tr>
+          <tr><td>コミット</td><td>変更のセーブポイント。「何を変えたか」のメッセージ付き</td></tr>
+          <tr><td>プッシュ</td><td>手元のコミットをGitHubへ送ること</td></tr>
+          <tr><td>クローン</td><td>GitHub上のリポジトリを手元に複製すること</td></tr>
+          <tr><td>ブランチ</td><td>履歴の分岐。本流(main)を壊さず作業するための並行世界</td></tr>
+        </table>
+
+        <h2>7-2. 準備:インストールとアカウント作成 <span class="badge basic">基礎</span></h2>
+        <ol>
+          <li><strong>Gitのインストール</strong> … <a href="https://git-scm.com/" target="_blank" rel="noopener">git-scm.com</a> からダウンロード(設定は基本すべてデフォルトでOK)</li>
+          <li><strong>GitHubアカウント作成</strong> … <a href="https://github.com/" target="_blank" rel="noopener">github.com</a> で無料登録(ユーザー名は公開URLの一部になるので真面目なものを!)</li>
+          <li><strong>初期設定</strong> … VS Codeのターミナル(<code>Ctrl + @</code>)で自分の名前とメールを登録
+            <pre><code>git config --global user.name "Taro Yamada"
+git config --global user.email "yamada@example.com"</code></pre>
+          </li>
+        </ol>
+
+        <h2>7-3. 最初のコミットからプッシュまで <span class="badge all">全員</span></h2>
+        <p>総合演習で作った<code>sakura-tech</code>フォルダを公開してみましょう。VS Codeでフォルダを開き、ターミナルで以下を1行ずつ実行します。</p>
+        <span class="code-title">ターミナル(フォルダの中で実行)</span>
+        <pre><code># ① このフォルダをGit管理下に置く(最初の1回だけ)
+git init
+
+# ② 全ファイルをコミット対象に載せる(ステージング)
+git add .
+
+# ③ セーブポイントを作る(-m の後はメッセージ)
+git commit -m "コーポレートサイト初版"</code></pre>
+        <p>次に、GitHub側で受け皿を作ります。</p>
+        <ol>
+          <li>GitHubにログイン → 右上の「+」→「New repository」</li>
+          <li>Repository name に <code>sakura-tech</code> と入力、<strong>Public</strong> を選択して「Create repository」</li>
+          <li>作成後に表示されるコマンドの「…or push an existing repository」の3行を、そのままターミナルで実行:
+            <pre><code>git remote add origin https://github.com/あなたのID/sakura-tech.git
+git branch -M main
+git push -u origin main</code></pre>
+          </li>
+        </ol>
+        <p>ブラウザでGitHubのリポジトリページを再読み込みして、ファイルが表示されていれば成功です🎉</p>
+
+        <div class="note">
+          <span class="note-title">💡 2回目以降の更新は3コマンドだけ</span><br>
+          ファイルを修正したら <code>git add .</code> → <code>git commit -m "変更内容"</code> → <code>git push</code>。この3つのリズムを体で覚えましょう。
+          VS Codeの左側の「ソース管理」パネルから、ボタン操作で同じことをすることもできます。
+        </div>
+
+        <h2>7-4. GitHub Pagesで世界に公開 <span class="badge all">全員</span></h2>
+        <p>いよいよ公開です。追加費用ゼロ、設定は3クリックです。</p>
+        <ol>
+          <li>GitHubのリポジトリページで「<strong>Settings</strong>」タブを開く</li>
+          <li>左メニューの「<strong>Pages</strong>」をクリック</li>
+          <li>「Branch」で <code>main</code> を選び「<strong>Save</strong>」</li>
+        </ol>
+        <p>1〜2分待つと、次のURLであなたのサイトが<strong>世界中から見られる状態</strong>になります。</p>
+        <pre><code>https://あなたのID.github.io/sakura-tech/</code></pre>
+        <div class="note">
+          <span class="note-title">⚠️ 公開前チェック</span><br>
+          Publicリポジトリは世界中の誰でも中身を見られます。<strong>本名・住所・社外秘情報・パスワードやAPIキーを含むファイルは絶対にコミットしないこと。</strong>
+          これは研修を超えて、実務での重大事故(秘密情報のコミット漏洩)防止の鉄則です。一度プッシュした秘密情報は「削除しても履歴に残る」ことも覚えておいてください。
+        </div>
+
+        <h2>7-5. 現場で使うGitの一歩先 <span class="badge all">全員</span></h2>
+        <p>チーム開発では、mainブランチに直接プッシュせず、次の流れで進むのが一般的です(GitHub Flow)。</p>
+        <pre><code>① git switch -c feature/add-news   ← 作業用ブランチを切る
+② 作業してコミット
+③ git push -u origin feature/add-news
+④ GitHub上で「Pull Request(PR)」を作成 ← 「この変更を取り込んでください」という依頼
+⑤ チームメンバーがコードレビュー
+⑥ 承認されたらmainにマージ</code></pre>
+        <p>「PR」「レビュー」「マージ」は現場の日常会話です。言葉だけでも今日覚えて帰ってください。</p>
+
+        <div class="column-advanced">
+          <div class="column-title">🎓 ベテラン向けコラム:公開・運用の選択肢 <span class="badge advanced">ベテラン向け</span></div>
+          <ul>
+            <li><strong>静的ホスティングの選択肢</strong> … GitHub Pagesの他、Cloudflare Pages、Netlify、Vercelが定番。いずれも無料枠があり、Gitにプッシュすると自動でビルド・デプロイされる(CD:継続的デプロイ)</li>
+            <li><strong>GitHub Actions</strong> … プッシュを起点にテストやビルドを自動実行するCI/CD基盤。Pagesのデプロイも実は内部でActionsが動いている</li>
+            <li><strong>独自ドメイン</strong> … お名前.comなどで取得したドメインをGitHub Pagesに設定可能(CNAMEレコード+リポジトリ設定)。HTTPSも自動で有効化される</li>
+            <li><strong>会社案件での注意</strong> … 無料ホスティングのSLA(稼働保証)は基本なし。商用案件では要件に応じてクラウド(AWS S3+CloudFront等)や有料プランを検討する</li>
+          </ul>
+        </div>
+
+        <h2>確認クイズ</h2>
+
+        <div class="quiz">
+          <p class="quiz-q">Q1. 変更の「セーブポイント」を作るGitコマンドは?</p>
+          <label><input type="radio" name="q1" value="a"> git commit</label>
+          <label><input type="radio" name="q1" value="b"> git push</label>
+          <label><input type="radio" name="q1" value="c"> git init</label>
+          <button class="quiz-check" data-name="q1" data-answer="a" data-explain="commitがセーブポイント作成、pushはそれをGitHubへ送る操作です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q2. GitHub Pagesの説明として正しいのは?</p>
+          <label><input type="radio" name="q2" value="a"> 有料のレンタルサーバーサービス</label>
+          <label><input type="radio" name="q2" value="b"> リポジトリの静的サイトを無料で公開できる機能</label>
+          <label><input type="radio" name="q2" value="c"> GitHubの利用マニュアルページのこと</label>
+          <button class="quiz-check" data-name="q2" data-answer="b" data-explain="HTML/CSS/JSの静的サイトなら、リポジトリの設定だけで無料公開できます。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q3. Publicリポジトリに絶対にコミットしてはいけないものは?</p>
+          <label><input type="radio" name="q3" value="a"> 画像ファイル</label>
+          <label><input type="radio" name="q3" value="b"> CSSファイル</label>
+          <label><input type="radio" name="q3" value="c"> パスワードやAPIキー</label>
+          <button class="quiz-check" data-name="q3" data-answer="c" data-explain="秘密情報のコミットは実務でも重大事故になります。削除しても履歴に残る点にも注意。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 演習 7:総合演習の成果物を公開しよう</div>
+          <ol>
+            <li>総合演習で作ったサイトをGitHubリポジトリにプッシュする</li>
+            <li>GitHub Pagesで公開し、スマホの実機からもアクセスして表示を確認する</li>
+            <li>公開URLを研修担当者に共有する</li>
+            <li>(応用)何か1箇所修正して、add → commit → push で公開サイトが更新されることを確認する</li>
+          </ol>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="06-practice.html">← 第6章</a>
+            <a href="08-trends.html">第8章 最新トレンド →</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,659 @@
+/* ============================================================
+   0からのホームページ作成研修 共通スタイルシート
+   この教材サイト自体が HTML / CSS / JS のお手本になっています。
+   コメントを読みながら「なぜこう書くのか」を確認してみてください。
+   ============================================================ */
+
+/* ---- CSS変数(カスタムプロパティ):サイト全体の色を一元管理 ---- */
+:root {
+  --sakura-pink: #f8b8c6;
+  --sakura-light: #fdeef2;
+  --sakura-deep: #d6607e;
+  --sakura-accent: #b03a5b;
+  --ink: #3a3a3a;
+  --ink-light: #6b6b6b;
+  --bg: #fffafb;
+  --card: #ffffff;
+  --code-bg: #2d2a2e;
+  --code-ink: #fcfcfa;
+  --ok: #3a9d5d;
+  --ng: #d64545;
+  --note: #fff6d9;
+  --line: #f0d5dc;
+  --radius: 12px;
+  --shadow: 0 2px 10px rgba(214, 96, 126, 0.10);
+}
+
+/* ---- リセット&基本設定 ---- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* 固定ヘッダーの高さぶん、アンカー位置をずらす */
+}
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.9;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--sakura-accent);
+}
+
+/* ---- ヘッダー(全ページ共通・上部固定) ---- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, var(--sakura-deep), var(--sakura-pink));
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.site-header .logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.site-header .title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.site-header .title small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.site-header .home-link {
+  margin-left: auto;
+  color: #fff;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+.site-header .home-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---- レイアウト:サイドバー+本文(CSS Grid) ---- */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+}
+
+/* ---- サイドバー(章ナビゲーション) ---- */
+.sidebar {
+  position: sticky;
+  top: 84px;
+  align-self: start;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 0.88rem;
+}
+
+.sidebar h2 {
+  font-size: 0.85rem;
+  color: var(--sakura-accent);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--sakura-pink);
+  padding-bottom: 6px;
+}
+
+.sidebar ol {
+  list-style: none;
+  counter-reset: chap;
+}
+
+.sidebar ol li {
+  counter-increment: chap;
+}
+
+.sidebar ol a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.sidebar ol a::before {
+  content: counter(chap);
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--sakura-light);
+  color: var(--sakura-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.sidebar ol a:hover {
+  background: var(--sakura-light);
+}
+
+.sidebar ol a.current {
+  background: var(--sakura-deep);
+  color: #fff;
+}
+
+.sidebar ol a.current::before {
+  background: #fff;
+}
+
+/* 完了済みの章にはチェックマーク(main.jsがdoneクラスを付与) */
+.sidebar ol a.done::after {
+  content: "✔";
+  margin-left: auto;
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.sidebar ol a.current.done::after {
+  color: #fff;
+}
+
+/* ---- 本文エリア ---- */
+.content {
+  min-width: 0; /* Gridの子要素がはみ出さないようにする定番テクニック */
+}
+
+.content > section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+
+.content h1 {
+  font-size: 1.6rem;
+  color: var(--sakura-accent);
+  margin-bottom: 4px;
+}
+
+.content .lead {
+  color: var(--ink-light);
+  margin-bottom: 20px;
+}
+
+.content h2 {
+  font-size: 1.25rem;
+  margin: 32px 0 12px;
+  padding-left: 12px;
+  border-left: 5px solid var(--sakura-deep);
+}
+
+.content h2:first-of-type {
+  margin-top: 8px;
+}
+
+.content h3 {
+  font-size: 1.05rem;
+  margin: 24px 0 8px;
+  color: var(--sakura-accent);
+}
+
+.content p {
+  margin-bottom: 12px;
+}
+
+.content ul,
+.content ol {
+  margin: 0 0 16px 1.5em;
+}
+
+.content li {
+  margin-bottom: 4px;
+}
+
+/* ---- レベルバッジ:対象者の目安 ---- */
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.badge.basic {
+  background: #e3f2e8;
+  color: #2e7d4f;
+}
+
+.badge.all {
+  background: #e5eefb;
+  color: #2b5fa8;
+}
+
+.badge.advanced {
+  background: #f3e5f5;
+  color: #7b3f9d;
+}
+
+/* ---- さくらちゃんの吹き出し ---- */
+.sakura-says {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.sakura-says img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid var(--sakura-pink);
+  background: #fff;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sakura-says .bubble {
+  position: relative;
+  background: var(--sakura-light);
+  border: 2px solid var(--sakura-pink);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 0.95rem;
+}
+
+/* 吹き出しのしっぽ:疑似要素で三角形を描く */
+.sakura-says .bubble::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 24px;
+  border: 6px solid transparent;
+  border-right-color: var(--sakura-pink);
+}
+
+.sakura-says .bubble .name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--sakura-accent);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ---- コードブロック ---- */
+pre {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border-radius: 10px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin: 12px 0 20px;
+}
+
+code {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+/* 本文中のインラインコード */
+p code, li code, td code {
+  background: var(--sakura-light);
+  color: var(--sakura-accent);
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.88em;
+}
+
+.code-title {
+  display: inline-block;
+  background: var(--code-bg);
+  color: #ccc;
+  font-size: 0.75rem;
+  padding: 4px 14px;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: -14px;
+}
+
+/* ---- 補足ボックス ---- */
+.note {
+  background: var(--note);
+  border-left: 5px solid #e0b93f;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 0.92rem;
+}
+
+.note .note-title {
+  font-weight: 700;
+  color: #9a7b1c;
+}
+
+/* ベテラン向けコラム */
+.column-advanced {
+  border: 2px dashed #b58ac9;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 24px 0;
+  background: #faf5fc;
+  font-size: 0.93rem;
+}
+
+.column-advanced .column-title {
+  font-weight: 700;
+  color: #7b3f9d;
+  margin-bottom: 6px;
+}
+
+/* ---- 表 ---- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 20px;
+  font-size: 0.9rem;
+}
+
+th, td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background: var(--sakura-light);
+  color: var(--sakura-accent);
+}
+
+tr:nth-child(even) td {
+  background: #fdf7f9;
+}
+
+/* ---- ライブ編集エリア(書いたHTMLが即プレビューされる) ---- */
+.live-editor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0 24px;
+}
+
+.live-editor textarea {
+  width: 100%;
+  min-height: 220px;
+  font-family: Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding: 12px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  resize: vertical;
+  background: var(--code-bg);
+  color: var(--code-ink);
+}
+
+.live-editor iframe {
+  width: 100%;
+  min-height: 220px;
+  border: 2px solid var(--sakura-pink);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.live-editor-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-light);
+  margin-bottom: 4px;
+}
+
+/* ---- クイズ ---- */
+.quiz {
+  border: 2px solid var(--sakura-pink);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 16px 0;
+}
+
+.quiz .quiz-q {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.quiz label {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.quiz label:hover {
+  background: var(--sakura-light);
+}
+
+.quiz .quiz-check {
+  margin-top: 10px;
+  background: var(--sakura-deep);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 22px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.quiz .quiz-check:hover {
+  background: var(--sakura-accent);
+}
+
+.quiz .quiz-result {
+  margin-top: 10px;
+  font-weight: 700;
+  display: none;
+}
+
+.quiz .quiz-result.ok {
+  display: block;
+  color: var(--ok);
+}
+
+.quiz .quiz-result.ng {
+  display: block;
+  color: var(--ng);
+}
+
+/* ---- 演習課題ボックス ---- */
+.exercise {
+  border: 2px solid var(--sakura-deep);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 20px 0;
+  background: linear-gradient(180deg, #fff, var(--sakura-light));
+}
+
+.exercise .exercise-title {
+  font-weight: 700;
+  color: var(--sakura-accent);
+  margin-bottom: 8px;
+}
+
+/* ---- 章の完了ボタンとページ送り ---- */
+.chapter-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.btn-done {
+  background: var(--ok);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 26px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-done.is-done {
+  background: #aaa;
+}
+
+.pager {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.pager a {
+  text-decoration: none;
+  border: 2px solid var(--sakura-deep);
+  color: var(--sakura-accent);
+  border-radius: 24px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pager a:hover {
+  background: var(--sakura-deep);
+  color: #fff;
+}
+
+/* ---- トップページ用:進捗バーと章カード ---- */
+.progress-wrap {
+  background: var(--sakura-light);
+  border-radius: 20px;
+  height: 22px;
+  overflow: hidden;
+  margin: 8px 0 4px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--sakura-pink), var(--sakura-deep));
+  border-radius: 20px;
+  transition: width 0.6s ease;
+}
+
+.progress-label {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+}
+
+.chapter-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.chapter-card {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: var(--card);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chapter-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(214, 96, 126, 0.2);
+}
+
+.chapter-card .chap-no {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--sakura-deep);
+}
+
+.chapter-card h3 {
+  margin: 4px 0 6px;
+  font-size: 1.02rem;
+}
+
+.chapter-card p {
+  font-size: 0.83rem;
+  color: var(--ink-light);
+  margin: 0;
+}
+
+.chapter-card .done-mark {
+  color: var(--ok);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* ---- フッター ---- */
+.site-footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--ink-light);
+  font-size: 0.8rem;
+}
+
+/* ---- レスポンシブ対応(タブレット・スマホ) ----
+   画面幅860px以下ではサイドバーを上に回り込ませ、1カラムにする */
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .live-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .content > section {
+    padding: 20px 18px;
+  }
+
+  .pager {
+    margin-left: 0;
+  }
+}

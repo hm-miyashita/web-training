@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 CSS基礎 | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第3章 CSS基礎</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第3章 CSS基礎</h1>
+        <p class="lead">HTMLという骨組みに、色・大きさ・余白という「見た目」を与えていきます。</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            CSSでつまずく人の9割は、<strong>「セレクタ」「ボックスモデル」「詳細度」</strong>の3つのどれかでつまずきます。
+            逆に言えば、この3つの山さえ越えれば、CSSは怖くありません。この章はその3つに集中しますね!
+          </div>
+        </div>
+
+        <h2>3-1. CSSの書き方と適用方法 <span class="badge basic">基礎</span></h2>
+        <p>CSSは「<strong>どこの</strong>(セレクタ)、<strong>何を</strong>(プロパティ)、<strong>どうする</strong>(値)」の3点セットで書きます。</p>
+        <pre><code>h1 {
+  color: red;
+  font-size: 24px;
+}
+└┬┘  └──┬──┘ └─┬─┘
+セレクタ プロパティ  値
+(どこの) (何を)  (どうする)</code></pre>
+        <p>CSSをHTMLに適用する方法は3つありますが、実務では<strong>③の外部ファイル方式が基本</strong>です。</p>
+        <table>
+          <tr><th>方法</th><th>書き方</th><th>使いどころ</th></tr>
+          <tr>
+            <td>① インライン</td>
+            <td><code>&lt;p style="color:red"&gt;</code></td>
+            <td>原則使わない(修正が地獄になる)</td>
+          </tr>
+          <tr>
+            <td>② styleタグ</td>
+            <td>headの中に<code>&lt;style&gt;…&lt;/style&gt;</code></td>
+            <td>小さな実験・1ページ完結のとき</td>
+          </tr>
+          <tr>
+            <td>③ 外部ファイル</td>
+            <td><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></td>
+            <td><strong>実務の標準</strong>。全ページで共有できる</td>
+          </tr>
+        </table>
+
+        <p>ライブエディタで試しましょう(ここでは実験用に②のstyleタグ方式を使います)。</p>
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(編集できます)</div>
+            <textarea spellcheck="false">&lt;style&gt;
+  h1 {
+    color: #d6607e;
+    border-bottom: 3px solid pink;
+  }
+  p {
+    color: #555;
+    font-size: 14px;
+  }
+&lt;/style&gt;
+
+&lt;h1&gt;桜通信株式会社&lt;/h1&gt;
+&lt;p&gt;私たちは技術で未来を作る会社です。&lt;/p&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <h2>3-2. セレクタ:狙った場所だけを装飾する <span class="badge all">全員</span></h2>
+        <p>「全部の<code>p</code>じゃなくて、この<code>p</code>だけ赤くしたい」を実現するのがセレクタです。最重要は<strong>クラスセレクタ</strong>。</p>
+        <table>
+          <tr><th>セレクタ</th><th>書き方</th><th>意味</th></tr>
+          <tr>
+            <td>要素セレクタ</td>
+            <td><code>p { }</code></td>
+            <td>すべての&lt;p&gt;要素</td>
+          </tr>
+          <tr>
+            <td><strong>クラスセレクタ</strong></td>
+            <td><code>.alert { }</code></td>
+            <td><code>class="alert"</code>が付いた要素。<strong>実務の主役</strong></td>
+          </tr>
+          <tr>
+            <td>IDセレクタ</td>
+            <td><code>#header { }</code></td>
+            <td><code>id="header"</code>の要素(idはページ内で一意)</td>
+          </tr>
+          <tr>
+            <td>子孫セレクタ</td>
+            <td><code>.menu a { }</code></td>
+            <td><code>class="menu"</code>の中にある&lt;a&gt;</td>
+          </tr>
+          <tr>
+            <td>疑似クラス</td>
+            <td><code>a:hover { }</code></td>
+            <td>マウスが乗っている状態の&lt;a&gt;</td>
+          </tr>
+        </table>
+
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(編集できます)</div>
+            <textarea spellcheck="false">&lt;style&gt;
+  p { color: #333; }
+  .alert {
+    color: red;
+    font-weight: bold;
+  }
+  .memo { color: green; }
+&lt;/style&gt;
+
+&lt;p&gt;これは普通の段落。&lt;/p&gt;
+&lt;p class="alert"&gt;これは警告文!&lt;/p&gt;
+&lt;p class="memo"&gt;これはメモ書き。&lt;/p&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <div class="note">
+          <span class="note-title">💡 クラス名の付け方</span><br>
+          <code>red-text</code>(見た目)ではなく<code>alert</code>(役割)のように、<strong>「何のためのものか」で名付ける</strong>のがコツです。
+          後で「警告は赤じゃなくオレンジにしよう」となったとき、<code>red-text</code>という名前だと嘘になってしまいます。
+        </div>
+
+        <h2>3-3. ボックスモデル:すべての要素は箱である <span class="badge all">全員</span></h2>
+        <p>CSS最重要概念です。<strong>すべてのHTML要素は、4層構造の「箱」</strong>として描画されます。</p>
+        <pre><code>┌─────────────────────────────┐
+│         margin(外側の余白)          │
+│  ┌───────────────────────┐  │
+│  │      border(枠線)              │  │
+│  │  ┌─────────────────┐  │  │
+│  │  │  padding(内側の余白)    │  │  │
+│  │  │  ┌───────────┐  │  │  │
+│  │  │  │ content(中身)  │  │  │  │
+│  │  │  └───────────┘  │  │  │
+│  │  └─────────────────┘  │  │
+│  └───────────────────────┘  │
+└─────────────────────────────┘</code></pre>
+        <ul>
+          <li><strong>margin</strong> … 箱の<strong>外側</strong>の余白(隣の要素との距離)</li>
+          <li><strong>border</strong> … 枠線</li>
+          <li><strong>padding</strong> … 箱の<strong>内側</strong>の余白(枠線と中身の距離)</li>
+          <li><strong>content</strong> … テキストや画像そのもの</li>
+        </ul>
+
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(paddingとmarginの数字を変えてみよう)</div>
+            <textarea spellcheck="false">&lt;style&gt;
+  .box {
+    background: #fdeef2;
+    border: 3px solid #d6607e;
+    padding: 20px;
+    margin: 30px;
+    border-radius: 12px;
+  }
+&lt;/style&gt;
+
+&lt;div class="box"&gt;箱その1&lt;/div&gt;
+&lt;div class="box"&gt;箱その2&lt;/div&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <div class="note">
+          <span class="note-title">💡 迷ったらDevToolsのComputedタブ</span><br>
+          <code>F12</code>で要素を選択すると、その要素のボックスモデルが図で表示されます。「余白がどこから来ているか分からない」ときはまずここを見る。これはプロも毎日やっている操作です。
+        </div>
+
+        <h2>3-4. よく使うプロパティ <span class="badge basic">基礎</span></h2>
+        <table>
+          <tr><th>プロパティ</th><th>役割</th><th>例</th></tr>
+          <tr><td><code>color</code></td><td>文字色</td><td><code>color: #d6607e;</code></td></tr>
+          <tr><td><code>background</code></td><td>背景(色・画像・グラデーション)</td><td><code>background: #fdeef2;</code></td></tr>
+          <tr><td><code>font-size</code></td><td>文字サイズ</td><td><code>font-size: 1.2rem;</code></td></tr>
+          <tr><td><code>font-weight</code></td><td>文字の太さ</td><td><code>font-weight: bold;</code></td></tr>
+          <tr><td><code>text-align</code></td><td>行内の揃え</td><td><code>text-align: center;</code></td></tr>
+          <tr><td><code>width</code> / <code>height</code></td><td>幅 / 高さ</td><td><code>width: 300px;</code></td></tr>
+          <tr><td><code>border-radius</code></td><td>角丸</td><td><code>border-radius: 8px;</code></td></tr>
+          <tr><td><code>box-shadow</code></td><td>影</td><td><code>box-shadow: 0 2px 8px rgba(0,0,0,.2);</code></td></tr>
+        </table>
+
+        <h3>色の指定方法</h3>
+        <ul>
+          <li><strong>色名</strong> … <code>red</code>、<code>pink</code> など(手軽だが実務では稀)</li>
+          <li><strong>16進数</strong> … <code>#d6607e</code>(実務の主流。#RRGGBBで赤緑青の強さ)</li>
+          <li><strong>rgb / rgba</strong> … <code>rgba(214, 96, 126, 0.5)</code>(4つ目の値は不透明度)</li>
+        </ul>
+
+        <h3>サイズの単位</h3>
+        <table>
+          <tr><th>単位</th><th>意味</th><th>使いどころ</th></tr>
+          <tr><td><code>px</code></td><td>ピクセル(固定)</td><td>枠線、影など細かい部分</td></tr>
+          <tr><td><code>rem</code></td><td>ルート要素の文字サイズ基準(通常16px=1rem)</td><td><strong>文字サイズはこれが現代の標準</strong>。ユーザーのブラウザ設定を尊重できる</td></tr>
+          <tr><td><code>%</code></td><td>親要素に対する割合</td><td>幅の指定</td></tr>
+          <tr><td><code>vw</code> / <code>vh</code></td><td>画面の幅 / 高さに対する割合</td><td>画面いっぱいの表現</td></tr>
+        </table>
+
+        <h2>3-5. カスケードと詳細度:スタイルの喧嘩の勝敗ルール <span class="badge all">全員</span></h2>
+        <p>同じ要素に複数のスタイルがぶつかったとき、どちらが勝つのか。CSSの名前(Cascading Style Sheets)の由来でもある重要ルールです。</p>
+        <ol>
+          <li><strong>詳細度が高いセレクタが勝つ</strong> … ID(#)> クラス(.)> 要素名 の順に強い</li>
+          <li><strong>同じ詳細度なら、後に書いたほうが勝つ</strong></li>
+        </ol>
+        <pre><code>p { color: black; }        /* 詳細度:低 */
+.alert { color: orange; }  /* 詳細度:中 ← クラスが勝つ */
+
+&lt;p class="alert"&gt;この文字はorangeになる&lt;/p&gt;</code></pre>
+        <div class="note">
+          <span class="note-title">⚠️ !important は最終兵器(=使わない)</span><br>
+          <code>color: red !important;</code>と書くと詳細度を無視して勝てますが、<strong>後から誰も上書きできない呪いのコード</strong>になります。
+          「!importantだらけのCSS」は荒れた現場の代名詞。詳細度を理解して、正しく勝ちましょう。
+        </div>
+
+        <div class="column-advanced">
+          <div class="column-title">🎓 ベテラン向けコラム:詳細度戦争の現代的解決 <span class="badge advanced">ベテラン向け</span></div>
+          <p>大規模開発での詳細度管理は長年の課題でしたが、近年は根本的な解決策が標準化されています。</p>
+          <ul>
+            <li><strong>カスケードレイヤー(@layer)</strong> … 「reset層 < base層 < components層」のようにCSS全体に優先順位の層を宣言でき、詳細度より層の順序が優先される。全モダンブラウザ対応済み</li>
+            <li><strong>:where()</strong> … 詳細度0のセレクタを書ける。ライブラリ側が上書きしやすいスタイルを提供するときの定番</li>
+            <li><strong>CSSネスト</strong> … Sassなしでネイティブにネストが書けるようになった(全モダンブラウザ対応済み)</li>
+            <li><strong>CSS変数(カスタムプロパティ)</strong> … この教材のstyle.cssも<code>:root</code>で色を一元管理しています。テーマ切替やダークモード対応の土台</li>
+          </ul>
+          <p>BEMなどの命名規則だけで戦っていた時代から、言語機能で解決する時代への転換期です。</p>
+        </div>
+
+        <h2>確認クイズ</h2>
+
+        <div class="quiz">
+          <p class="quiz-q">Q1. class="notice" が付いた要素だけを選ぶセレクタは?</p>
+          <label><input type="radio" name="q1" value="a"> notice { }</label>
+          <label><input type="radio" name="q1" value="b"> .notice { }</label>
+          <label><input type="radio" name="q1" value="c"> #notice { }</label>
+          <button class="quiz-check" data-name="q1" data-answer="b" data-explain="クラスはドット(.)、IDはシャープ(#)です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q2. 「枠線と中身の間」の余白を作るプロパティは?</p>
+          <label><input type="radio" name="q2" value="a"> margin</label>
+          <label><input type="radio" name="q2" value="b"> padding</label>
+          <label><input type="radio" name="q2" value="c"> gap</label>
+          <button class="quiz-check" data-name="q2" data-answer="b" data-explain="paddingが内側、marginが外側の余白です。ボックスモデルの図を思い出しましょう。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q3. p { color: blue; } と .txt { color: green; } が両方当たる要素の文字色は?</p>
+          <label><input type="radio" name="q3" value="a"> blue(先に書いたほうが勝つ)</label>
+          <label><input type="radio" name="q3" value="b"> green(クラスセレクタのほうが詳細度が高い)</label>
+          <label><input type="radio" name="q3" value="c"> 黒(喧嘩したら無効になる)</label>
+          <button class="quiz-check" data-name="q3" data-answer="b" data-explain="クラス > 要素名。詳細度の高いセレクタが勝ちます。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 演習 3:自己紹介ページを装飾しよう</div>
+          <p>演習2で作った<code>jikoshokai.html</code>に、外部CSSファイル<code>style.css</code>を追加して装飾しましょう。</p>
+          <ol>
+            <li><code>&lt;link rel="stylesheet" href="style.css"&gt;</code> で外部CSSを読み込む</li>
+            <li>ページ全体の背景色と、本文の文字色を設定する</li>
+            <li>h1に好きな色と下線(border-bottom)を付ける</li>
+            <li>経歴テーブルに枠線と、1行おきの背景色(<code>tr:nth-child(even)</code>)を付ける</li>
+            <li>(応用)プロフィール全体を「角丸+影付きのカード」にする</li>
+          </ol>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="02-html.html">← 第2章</a>
+            <a href="04-layout.html">第4章 レイアウト →</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

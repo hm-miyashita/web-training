@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 JavaScript基礎 | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第5章 JavaScript基礎</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第5章 JavaScript基礎</h1>
+        <p class="lead">ページに「動き」を与えるプログラミング言語、JavaScriptに入門します。</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            ついにプログラミング言語の登場です!でも安心してください。Webでよく使うJavaScriptのパターンは
+            <strong>「①要素を取ってきて → ②イベントを待ち受けて → ③中身やクラスを変える」</strong>——ほぼこれだけなんです。
+            この「三拍子」を合言葉に進みましょう!
+          </div>
+        </div>
+
+        <h2>5-1. JavaScriptを書く場所 <span class="badge basic">基礎</span></h2>
+        <p>CSSと同様、実務では<strong>外部ファイル方式</strong>が基本です。<code>body</code>の閉じタグ直前で読み込むのが定番(HTMLを読み終わってから実行させるため)。</p>
+        <pre><code>&lt;body&gt;
+  &lt;h1&gt;こんにちは&lt;/h1&gt;
+  ...ページの内容...
+
+  &lt;script src="main.js"&gt;&lt;/script&gt;  ← 最後に読み込む
+&lt;/body&gt;</code></pre>
+        <div class="note">
+          <span class="note-title">💡 console.log() と DevTools の Console タブ</span><br>
+          <code>console.log("こんにちは");</code> と書くと、DevToolsのConsoleタブに文字が出力されます。
+          プログラムの動きを確認する<strong>開発者の目</strong>です。この章の学習中はConsoleタブを開きっぱなしにしましょう。
+          <code>F12</code> → Consoleタブに直接コードを打ち込んで実験もできます。
+        </div>
+
+        <h2>5-2. 変数:値に名前を付ける <span class="badge basic">基礎</span></h2>
+        <pre><code>const name = "さくら";   // const:あとで変更しない値(基本はこちら)
+let count = 0;           // let:あとで変更する値
+count = count + 1;       // letなら再代入できる
+
+// 値には種類(型)がある
+const text = "こんにちは";   // 文字列(クォートで囲む)
+const price = 1500;          // 数値
+const isOpen = true;         // 真偽値(true / false)
+const members = ["田中", "鈴木", "佐藤"];  // 配列(値のリスト)
+const user = { name: "田中", age: 25 };    // オブジェクト(名前付きの値の集まり)</code></pre>
+        <div class="note">
+          <span class="note-title">⚠️ var は使わない</span><br>
+          古い教材には<code>var</code>が登場しますが、スコープの罠が多い旧式の書き方です。現代のコードは<strong>constを基本、再代入が必要なときだけlet</strong>です。
+        </div>
+
+        <h2>5-3. 関数と条件分岐 <span class="badge basic">基礎</span></h2>
+        <pre><code>// 関数:処理のまとまりに名前を付けて、何度でも呼べるようにする
+function greet(name) {
+  return "こんにちは、" + name + "さん!";
+}
+console.log(greet("田中"));   // → こんにちは、田中さん!
+
+// 条件分岐:状況に応じて処理を変える
+const hour = 15;
+if (hour < 12) {
+  console.log("おはようございます");
+} else if (hour < 18) {
+  console.log("こんにちは");
+} else {
+  console.log("こんばんは");
+}
+
+// 繰り返し:配列の全要素に同じ処理をする
+const members = ["田中", "鈴木", "佐藤"];
+members.forEach(function (m) {
+  console.log(m + "さん、出席");
+});</code></pre>
+
+        <h2>5-4. DOM操作:三拍子の実践 <span class="badge all">全員</span></h2>
+        <p>ブラウザはHTMLを読み込むと、<strong>DOM</strong>(Document Object Model)という「JavaScriptから触れるページの模型」を作ります。この模型を操作すると、画面がリアルタイムに変わります。</p>
+        <p>冒頭の「三拍子」をコードにするとこうなります。</p>
+        <pre><code>// ① 要素を取ってくる(CSSと同じセレクタが使える!)
+const btn = document.querySelector("#greet-btn");
+const output = document.querySelector("#output");
+
+// ② イベントを待ち受ける(クリックされたら…)
+btn.addEventListener("click", function () {
+  // ③ 中身を変える
+  output.textContent = "ボタンが押されました!🌸";
+});</code></pre>
+
+        <p>実際に動かしてみましょう。</p>
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(メッセージを変えてみよう)</div>
+            <textarea spellcheck="false">&lt;button id="greet-btn"&gt;あいさつする&lt;/button&gt;
+&lt;p id="output"&gt;ここにメッセージが出ます&lt;/p&gt;
+
+&lt;script&gt;
+  const btn = document.querySelector("#greet-btn");
+  const output = document.querySelector("#output");
+
+  btn.addEventListener("click", function () {
+    output.textContent = "こんにちは!🌸";
+    output.style.color = "#d6607e";
+  });
+&lt;/script&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果(ボタンを押してみて!)</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <h3>よく使うDOM操作まとめ</h3>
+        <table>
+          <tr><th>やりたいこと</th><th>書き方</th></tr>
+          <tr><td>要素を1つ取る</td><td><code>document.querySelector(".menu")</code></td></tr>
+          <tr><td>要素を全部取る</td><td><code>document.querySelectorAll(".item")</code></td></tr>
+          <tr><td>文字を変える</td><td><code>el.textContent = "新しい文字";</code></td></tr>
+          <tr><td>クラスを付ける/外す/切替</td><td><code>el.classList.add / remove / toggle("open")</code></td></tr>
+          <tr><td>入力欄の値を取る</td><td><code>input.value</code></td></tr>
+          <tr><td>クリックを待つ</td><td><code>el.addEventListener("click", 関数)</code></td></tr>
+        </table>
+
+        <h2>5-5. 実践パターン:クラスの付け外しでUIを作る <span class="badge all">全員</span></h2>
+        <p>現場のJavaScriptで最頻出のパターンは、<strong>「CSSで2つの状態を用意しておき、JSでクラスを切り替える」</strong>です。開閉メニュー、タブ、モーダル…あらゆるUIがこの応用でできています。</p>
+
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(開閉パネルの仕組み)</div>
+            <textarea spellcheck="false">&lt;style&gt;
+  .panel {
+    display: none;   /* ふだんは隠す */
+    background: #fdeef2;
+    padding: 12px;
+    border-radius: 8px;
+  }
+  .panel.open {
+    display: block;  /* openクラスが付いたら見せる */
+  }
+&lt;/style&gt;
+
+&lt;button id="toggle"&gt;メニュー ▼&lt;/button&gt;
+&lt;div class="panel" id="menu"&gt;
+  &lt;p&gt;・会社概要&lt;/p&gt;
+  &lt;p&gt;・事業内容&lt;/p&gt;
+  &lt;p&gt;・お問い合わせ&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  const btn = document.querySelector("#toggle");
+  const menu = document.querySelector("#menu");
+  btn.addEventListener("click", function () {
+    menu.classList.toggle("open");
+  });
+&lt;/script&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果(ボタンで開閉します)</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            実はこの教材の<strong>クイズの答え合わせも、章の完了ボタンも、全部この「三拍子+クラス切替」でできています</strong>。
+            <code>assets/js/main.js</code>を開いてみてください。もう読める部分がたくさんあるはずですよ!
+          </div>
+        </div>
+
+        <div class="column-advanced">
+          <div class="column-title">🎓 ベテラン向けコラム:モダンJSの必須知識アップデート <span class="badge advanced">ベテラン向け</span></div>
+          <p>「JavaScriptはjQueryの時代で止まっている」という方向けの、現在の標準機能ダイジェストです。</p>
+          <ul>
+            <li><strong>アロー関数</strong> … <code>(a, b) =&gt; a + b</code>。現場のコードはほぼこの記法</li>
+            <li><strong>テンプレートリテラル</strong> … <code>`こんにちは、${name}さん`</code>。文字列連結の+はもう使わない</li>
+            <li><strong>分割代入・スプレッド構文</strong> … <code>const { name, age } = user;</code> / <code>[...arr1, ...arr2]</code></li>
+            <li><strong>async/await + fetch</strong> … 非同期通信の標準形。XMLHttpRequestやコールバック地獄は過去のもの
+              <pre><code>const res = await fetch("https://api.example.com/users");
+const users = await res.json();</code></pre></li>
+            <li><strong>ESモジュール</strong> … <code>import / export</code>がブラウザ標準に。<code>&lt;script type="module"&gt;</code></li>
+            <li><strong>jQueryの終焉</strong> … querySelector、classList、fetchの標準化により、新規案件でjQueryを採用する理由はほぼ消滅。ただし保守案件では現役なので「読める」必要はまだある</li>
+          </ul>
+        </div>
+
+        <h2>確認クイズ</h2>
+
+        <div class="quiz">
+          <p class="quiz-q">Q1. あとで変更しない値を入れる変数宣言はどれが適切?</p>
+          <label><input type="radio" name="q1" value="a"> var</label>
+          <label><input type="radio" name="q1" value="b"> let</label>
+          <label><input type="radio" name="q1" value="c"> const</label>
+          <button class="quiz-check" data-name="q1" data-answer="c" data-explain="constが基本、再代入するときだけlet、varは使わない、が現代の鉄則です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q2. 「クリックされたら処理する」を実現するメソッドは?</p>
+          <label><input type="radio" name="q2" value="a"> addEventListener</label>
+          <label><input type="radio" name="q2" value="b"> querySelector</label>
+          <label><input type="radio" name="q2" value="c"> console.log</label>
+          <button class="quiz-check" data-name="q2" data-answer="a" data-explain="querySelectorで取ってきた要素に、addEventListenerでイベントを待ち受けさせます。三拍子の②です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q3. 要素に「openクラスが付いていれば外し、なければ付ける」のは?</p>
+          <label><input type="radio" name="q3" value="a"> el.classList.add("open")</label>
+          <label><input type="radio" name="q3" value="b"> el.classList.toggle("open")</label>
+          <label><input type="radio" name="q3" value="c"> el.classList.remove("open")</label>
+          <button class="quiz-check" data-name="q3" data-answer="b" data-explain="toggleは付け外しを自動で切り替えます。開閉UIの定番です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 演習 5:自己紹介ページに動きを付けよう</div>
+          <ol>
+            <li>「もっと見る」ボタンを押すと、隠れていた詳細プロフィールが表示される開閉UIを作る(クラス切替パターン)</li>
+            <li>ページを開くと、その時刻に応じて「おはようございます/こんにちは/こんばんは」と挨拶が変わる欄を作る(ヒント:<code>new Date().getHours()</code>)</li>
+            <li>(応用)ボタンを押すたびにカウントが増える「いいねボタン」を作る</li>
+            <li>(ベテラン向け)上記をアロー関数+テンプレートリテラルで書き直す</li>
+          </ol>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="04-layout.html">← 第4章</a>
+            <a href="06-practice.html">第6章 総合演習 →</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

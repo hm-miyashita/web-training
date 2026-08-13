@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 最新トレンド | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第8章 最新トレンド</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第8章 Web業界の最新トレンド(2026年版)</h1>
+        <p class="lead">基礎を学んだ皆さんが「現場の会話についていく」ための、いまのWeb業界の見取り図です。</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            この章は新卒の方には「地図」として、ベテランの方には「知識の棚卸しリスト」として使ってください。
+            全部を深く理解する必要はありません。<strong>「言葉を知っていて、概要を説明できる」だけで、現場での会話とキャッチアップの速度が全然違います</strong>よ🌸
+          </div>
+        </div>
+
+        <h2>8-1. フロントエンドフレームワークの世界 <span class="badge all">全員</span></h2>
+        <p>実務の中〜大規模開発では、素のHTML/JSではなく<strong>フレームワーク</strong>を使うのが主流です。「部品(コンポーネント)を組み合わせてUIを作る」という発想は全フレームワーク共通です。</p>
+        <table>
+          <tr><th>名前</th><th>特徴</th><th>ひとこと</th></tr>
+          <tr>
+            <td><strong>React</strong></td>
+            <td>最大シェア。求人数も最多</td>
+            <td>迷ったらこれ。JSXという記法でUIを書く</td>
+          </tr>
+          <tr>
+            <td><strong>Next.js</strong></td>
+            <td>Reactベースのフルスタックフレームワーク</td>
+            <td>「React案件」の実態はNext.js案件であることが多い</td>
+          </tr>
+          <tr>
+            <td><strong>Vue.js</strong></td>
+            <td>学習しやすく日本で人気。国内SIer案件でも多い</td>
+            <td>HTMLに近い書き心地。Nuxtはそのフルスタック版</td>
+          </tr>
+          <tr>
+            <td><strong>Svelte / Astro</strong></td>
+            <td>新世代。ビルド時に最適化し実行時が軽い</td>
+            <td>Astroはコンテンツサイトで採用増加中</td>
+          </tr>
+          <tr>
+            <td><strong>TypeScript</strong></td>
+            <td>JavaScriptに型を足した言語(フレームワークではない)</td>
+            <td><strong>現場は今やTS前提</strong>。JSの次に学ぶべき筆頭</td>
+          </tr>
+        </table>
+        <div class="note">
+          <span class="note-title">💡 学ぶ順番を間違えない</span><br>
+          フレームワークは、この研修でやった<strong>HTML/CSS/JSの理解の上に成り立っています</strong>。基礎を飛ばしてReactから入ると必ず伸び悩みます。この研修の内容こそが、どのフレームワークにも通じる土台です。
+        </div>
+
+        <h2>8-2. レンダリング戦略:SSR / SSG / CSR <span class="badge advanced">ベテラン向け</span></h2>
+        <p>「HTMLをいつ・どこで組み立てるか」は、現代フロントエンドの中心的な設計テーマです。</p>
+        <table>
+          <tr><th>方式</th><th>組み立てるタイミング</th><th>向いている用途</th></tr>
+          <tr><td><strong>CSR</strong>(Client Side Rendering)</td><td>ブラウザ上でJSが組み立てる</td><td>ログイン後の管理画面・業務アプリ</td></tr>
+          <tr><td><strong>SSR</strong>(Server Side Rendering)</td><td>リクエストのたびにサーバーで</td><td>ECや更新頻度の高いメディア</td></tr>
+          <tr><td><strong>SSG</strong>(Static Site Generation)</td><td>ビルド時に事前生成</td><td>コーポレートサイト、ブログ、ドキュメント</td></tr>
+        </table>
+        <p>近年はこれらを混ぜる(ページ単位・部品単位で使い分ける)のが主流で、React Server Componentsやアイランドアーキテクチャ(Astro)など「必要な部分だけJSを送る」方向に進化しています。皆さんが総合演習で作ったのは、いわば手作りのSSGサイトです。</p>
+
+        <h2>8-3. アクセシビリティ(a11y):義務の時代へ <span class="badge all">全員</span></h2>
+        <p>アクセシビリティ=「高齢者や障害のある方を含む、<strong>誰もが使えること</strong>」。日本では2024年の改正障害者差別解消法施行を機に、官公庁・大手案件で<strong>WCAG準拠が要件化される流れが加速</strong>しています。もはや「余裕があればやる」ものではありません。</p>
+        <p>今日からできる基本5箇条:</p>
+        <ol>
+          <li>画像に適切な<code>alt</code>を書く(第2章でやりましたね)</li>
+          <li>見出し階層(h1→h2→h3)を飛ばさない</li>
+          <li>文字色と背景色のコントラストを確保する(DevToolsで検証可能)</li>
+          <li>キーボードだけで全操作できるようにする(Tabキーで一周してみる)</li>
+          <li>「ここをクリック」ではなく意味の分かるリンクテキストにする</li>
+        </ol>
+
+        <h2>8-4. パフォーマンス:Core Web Vitals <span class="badge advanced">ベテラン向け</span></h2>
+        <p>Googleはページの体感速度を<strong>Core Web Vitals</strong>という3指標で計測し、検索順位の要因にしています。</p>
+        <ul>
+          <li><strong>LCP</strong>(Largest Contentful Paint)… メインコンテンツが表示されるまでの速さ(目標2.5秒以内)</li>
+          <li><strong>INP</strong>(Interaction to Next Paint)… 操作への反応の速さ(旧指標FIDから2024年に交代)</li>
+          <li><strong>CLS</strong>(Cumulative Layout Shift)… 表示中のガタつき(画像にwidth/height指定を!)</li>
+        </ul>
+        <p>計測はDevToolsの<strong>Lighthouse</strong>タブから誰でも実行できます。総合演習の上級課題でぜひ。</p>
+
+        <h2>8-5. AIとWeb制作:開発スタイルの地殻変動 <span class="badge all">全員</span></h2>
+        <p>この数年で最も大きな変化です。GitHub CopilotやClaude、ChatGPTなどの生成AIは、コード補完から「要件を伝えるとページ一式を生成する」レベルに到達し、<strong>AIエージェントに開発タスクを任せる</strong>スタイルも実用化しています。</p>
+        <p>ではこの研修は無駄だったのでしょうか?——むしろ逆です。</p>
+        <ul>
+          <li><strong>AIの出力の正否を判断できるのは、基礎がある人だけ</strong>。AIは自信満々に間違えます</li>
+          <li>要件をAIに正確に伝える(プロンプトを書く)には、HTML/CSS/JSの語彙が必要</li>
+          <li>セキュリティ・アクセシビリティ・保守性のレビューは人間の仕事として残る</li>
+        </ul>
+        <p>推奨する使い方:<strong>「まず自分で書く → AIにレビュー・改善案を求める → 差分から学ぶ」</strong>。写経段階でAIに丸投げすると、成長が止まります。</p>
+
+        <h2>8-6. セキュリティの基礎知識 <span class="badge all">全員</span></h2>
+        <p>フロントエンド担当でも最低限知っておくべき攻撃と対策です。名前だけでも覚えておきましょう。</p>
+        <table>
+          <tr><th>脅威</th><th>概要</th><th>基本対策</th></tr>
+          <tr>
+            <td><strong>XSS</strong>(クロスサイトスクリプティング)</td>
+            <td>入力欄経由で悪意あるスクリプトを埋め込まれる</td>
+            <td>ユーザー入力をそのままHTMLに埋め込まない(<code>textContent</code>を使う等)</td>
+          </tr>
+          <tr>
+            <td><strong>CSRF</strong>(クロスサイトリクエストフォージェリ)</td>
+            <td>ログイン済みユーザーに意図しない操作をさせる</td>
+            <td>トークン検証(フレームワークが標準装備)</td>
+          </tr>
+          <tr>
+            <td>秘密情報の漏洩</td>
+            <td>APIキー等をフロントのコードやリポジトリに含めてしまう</td>
+            <td>第7章の鉄則。フロントのJSは全世界に公開されると心得る</td>
+          </tr>
+        </table>
+
+        <h2>8-7. キャッチアップし続けるための情報源 <span class="badge all">全員</span></h2>
+        <ul>
+          <li><strong>MDN Web Docs</strong> … Web技術の公式辞書。まずここ(日本語あり)</li>
+          <li><strong>web.dev</strong> … Googleによるベストプラクティス集</li>
+          <li><strong>State of JS / State of CSS</strong> … 年次の大規模開発者調査。トレンドの定点観測に最適</li>
+          <li><strong>Can I use</strong> … ブラウザ対応状況の確認。「Baseline」表示が新しい判断基準に</li>
+          <li>国内では Zenn / Qiita、カンファレンス動画(YouTube)も有効</li>
+        </ul>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            これで全8章、完走です!お疲れさまでした🌸
+            Webの世界は変化が速いけれど、この研修でやった<strong>HTML・CSS・JavaScript・Gitはこの先も変わらない共通言語</strong>です。
+            待機期間が明けて現場に戻っても、ここで手を動かした経験はきっと武器になります。最後に、総合演習の作品公開をお忘れなく!
+          </div>
+        </div>
+
+        <h2>確認クイズ(修了テスト)</h2>
+
+        <div class="quiz">
+          <p class="quiz-q">Q1. 現場でJavaScriptとセットで「前提」になりつつある、型を追加した言語は?</p>
+          <label><input type="radio" name="q1" value="a"> TypeScript</label>
+          <label><input type="radio" name="q1" value="b"> Java</label>
+          <label><input type="radio" name="q1" value="c"> CoffeeScript</label>
+          <button class="quiz-check" data-name="q1" data-answer="a" data-explain="TypeScriptはJSに型を足した言語で、中〜大規模開発の事実上の標準です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q2. コーポレートサイトのように更新頻度が低いサイトに向く、事前生成方式は?</p>
+          <label><input type="radio" name="q2" value="a"> CSR</label>
+          <label><input type="radio" name="q2" value="b"> SSG</label>
+          <label><input type="radio" name="q2" value="c"> SSR</label>
+          <button class="quiz-check" data-name="q2" data-answer="b" data-explain="SSG(Static Site Generation)はビルド時にHTMLを作っておく方式。速くて安くて堅牢です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q3. 生成AI時代のエンジニアの学び方として、この研修が推奨するのは?</p>
+          <label><input type="radio" name="q3" value="a"> AIがあるので基礎学習は不要</label>
+          <label><input type="radio" name="q3" value="b"> AIの利用は禁止して全部手書きする</label>
+          <label><input type="radio" name="q3" value="c"> まず自分で書き、AIのレビューや改善案との差分から学ぶ</label>
+          <button class="quiz-check" data-name="q3" data-answer="c" data-explain="AIの出力を評価・修正できる基礎力こそが、これからのエンジニアの価値になります。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 演習 8(最終課題):15分LT(ライトニングトーク)</div>
+          <p>この章で紹介したトピックから1つ選び、<strong>他の待機メンバーに向けて15分で紹介する資料</strong>を作ってください(スライドでも、Webページ自作でも可)。</p>
+          <ul>
+            <li>新卒:基礎5箇条など「自分が理解できた範囲」を自分の言葉で</li>
+            <li>中堅:実際に小さなデモを作って見せる(例:コンテナクエリ、ダークモード)</li>
+            <li>ベテラン:過去案件の経験と最新動向を結びつけて語る(例:「jQuery案件をモダン化するなら」)</li>
+          </ul>
+          <p>人に教えることが最強の学習法です。待機期間をチームの学びの時間に変えましょう!</p>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="07-publish.html">← 第7章</a>
+            <a href="../index.html">トップへ戻る</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

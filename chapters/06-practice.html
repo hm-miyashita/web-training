@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 総合演習 | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第6章 総合演習</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第6章 総合演習:コーポレートサイトを0から作る</h1>
+        <p class="lead">ここまでの知識を総動員して、架空企業のWebサイトを1人で作り上げます。本章は読む章ではなく「作る章」です。</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            実務のWeb制作は「いきなりコードを書く」のではなく、<strong>要件確認 → 設計 → 実装 → 確認</strong>の順に進みます。
+            この演習も同じ流れでやってみましょう。SESの現場でお客様の要件を形にする、あの流れの縮小版です!
+          </div>
+        </div>
+
+        <h2>STEP 0. 課題の要件(お客様からの依頼書) <span class="badge all">全員</span></h2>
+        <div class="exercise">
+          <div class="exercise-title">📋 依頼書</div>
+          <p><strong>架空企業「桜テック株式会社」のコーポレートサイトを制作してください。</strong></p>
+          <ul>
+            <li>ページ構成:トップページ 1枚(ページ内をスクロールで移動する構成でOK)</li>
+            <li>必須セクション:①ヒーロー(メインビジュアル) ②会社概要 ③事業内容(3つ) ④お知らせ ⑤お問い合わせフォーム ⑥フッター</li>
+            <li>スマホでもPCでも崩れないこと(レスポンシブ必須)</li>
+            <li>ナビメニューをクリックすると各セクションに移動できること</li>
+            <li>会社のイメージカラーは自由。ただしサイト全体で統一感を出すこと</li>
+          </ul>
+        </div>
+
+        <h2>STEP 1. 設計:紙に描いてから作る <span class="badge all">全員</span></h2>
+        <p>いきなりVS Codeを開かず、まず<strong>ワイヤーフレーム</strong>(画面の配置図)を紙かメモアプリに描きます。5分でOK。</p>
+        <pre><code>┌────────────────────────┐
+│ ロゴ        [会社概要][事業][お知らせ][問合せ] │ ← header(sticky)
+├────────────────────────┤
+│                                                │
+│      技術で、未来を咲かせる。                    │ ← ①ヒーロー
+│      [お問い合わせはこちら]                     │
+├────────────────────────┤
+│ ② 会社概要(表:社名/設立/所在地/代表)        │
+├────────────────────────┤
+│ ③ 事業内容                                     │
+│ ┌──────┐┌──────┐┌──────┐   │ ← カード3枚
+│ │ SES事業  ││ 受託開発 ││ 自社開発 │   │   (Grid)
+│ └──────┘└──────┘└──────┘   │
+├────────────────────────┤
+│ ④ お知らせ(リスト3件)                        │
+├────────────────────────┤
+│ ⑤ お問い合わせ(フォーム)                     │
+├────────────────────────┤
+│ ⑥ © 桜テック株式会社                          │ ← footer
+└────────────────────────┘</code></pre>
+        <p>次に<strong>ファイル構成</strong>を決めます。今回はこの3ファイル構成で行きましょう。</p>
+        <pre><code>sakura-tech/
+├── index.html    ← 構造
+├── style.css     ← 見た目
+└── script.js     ← 動き</code></pre>
+
+        <h2>STEP 2. 実装の手順ガイド <span class="badge basic">基礎</span></h2>
+        <p>迷子にならないよう、作る順番を示します。<strong>「HTMLを全部書いてからCSS」ではなく、セクションごとに HTML → CSS を繰り返す</strong>のがおすすめです。</p>
+        <ol>
+          <li><strong>雛形</strong> … DOCTYPE〜body、viewportメタタグ、CSS/JSの読み込み(第2章)</li>
+          <li><strong>セマンティックな骨組み</strong> … header / main / footer と、各セクションの<code>&lt;section id="about"&gt;</code>など。<strong>idを付けるのがポイント</strong>(ナビのリンク先になる)</li>
+          <li><strong>ヘッダーとナビ</strong> … <code>&lt;a href="#about"&gt;会社概要&lt;/a&gt;</code>のようにページ内リンクにする。Flexboxで横並び(第4章)</li>
+          <li><strong>ヒーロー</strong> … キャッチコピーを大きく。<code>background: linear-gradient(...)</code>やパディング大きめで存在感を</li>
+          <li><strong>会社概要</strong> … tableで(第2章)</li>
+          <li><strong>事業内容</strong> … Gridで3列カード、メディアクエリでスマホ1列(第4章)</li>
+          <li><strong>お知らせ・フォーム</strong> … リストとform(第2章)</li>
+          <li><strong>JavaScriptで動きを1つ以上</strong> … 下の課題リストから選択(第5章)</li>
+          <li><strong>スマホ確認</strong> … DevToolsのデバイスツールバーで最終チェック(第4章)</li>
+        </ol>
+
+        <div class="note">
+          <span class="note-title">💡 詰まったときの調べ方(これも研修の一部です)</span><br>
+          ①エラーや疑問を<strong>DevToolsで確認</strong> → ②<strong>MDN(developer.mozilla.org)</strong>で該当プロパティを検索 → ③それでも不明なら教材の該当章に戻る。
+          「調べて解決する力」こそ、現場で一番評価されるスキルです。生成AIに聞くのも現代の正攻法ですが、<strong>出てきたコードを理解してから使う</strong>こと。理解せず貼るのはNGです。
+        </div>
+
+        <h2>STEP 3. レベル別 追加課題 <span class="badge all">全員</span></h2>
+        <p>基本要件を満たしたら、自分のレベルに合わせて追加課題に挑戦してください。</p>
+
+        <h3>🌱 初級(新卒・未経験)</h3>
+        <ul>
+          <li>ナビメニューにホバー効果を付ける(<code>:hover</code>で色が変わる)</li>
+          <li>「トップへ戻る」ボタンを右下に固定表示する(<code>position: fixed</code>)</li>
+          <li>お知らせを1件クリックすると詳細が開閉する(第5章のクラス切替パターン)</li>
+        </ul>
+
+        <h3>🌿 中級(若手〜中堅)</h3>
+        <ul>
+          <li>スマホ表示のときだけナビを「ハンバーガーメニュー(≡)」にする(メディアクエリ+クラス切替の合わせ技)</li>
+          <li>フォーム送信時にJavaScriptで入力チェックをする(空欄なら警告表示、<code>event.preventDefault()</code>を調べてみよう)</li>
+          <li>スクロールに応じてセクションがふわっと現れる(<code>IntersectionObserver</code>を調べてみよう)</li>
+        </ul>
+
+        <h3>🌸 上級(ベテラン)</h3>
+        <ul>
+          <li>CSS変数でカラーテーマを定義し、<strong>ダークモード切替ボタン</strong>を実装する(bodyへのクラス切替+CSS変数の上書き)</li>
+          <li>お知らせをJSの配列データから<strong>動的に生成</strong>する(HTMLに直書きしない)。余裕があれば<code>fetch</code>でJSONファイルから読み込む</li>
+          <li>Lighthouse(DevToolsの監査ツール)でパフォーマンス・アクセシビリティのスコアを測り、<strong>両方90点以上</strong>にチューニングする</li>
+          <li>コンテナクエリ(<code>@container</code>)を使い、カードコンポーネントを置き場所に応じて自動最適化させる</li>
+        </ul>
+
+        <h2>STEP 4. セルフレビュー(チェックリスト) <span class="badge all">全員</span></h2>
+        <p>完成したら、納品前のつもりで自己点検しましょう。</p>
+        <table>
+          <tr><th>#</th><th>チェック項目</th></tr>
+          <tr><td>1</td><td>タイトルバー(titleタグ)に適切なサイト名が表示されている</td></tr>
+          <tr><td>2</td><td>viewportメタタグがあり、スマホで文字が豆粒にならない</td></tr>
+          <tr><td>3</td><td>画像にalt属性がある/見出しはh1→h2→h3の順で飛ばしていない</td></tr>
+          <tr><td>4</td><td>divだけでなくheader/main/section/footerで構造化されている</td></tr>
+          <tr><td>5</td><td>CSSは外部ファイルで、インラインstyleを使っていない</td></tr>
+          <tr><td>6</td><td>色やフォントに統一感がある(CSS変数を使うとなお良い)</td></tr>
+          <tr><td>7</td><td>画面幅を縮めても横スクロールが発生しない</td></tr>
+          <tr><td>8</td><td>ConsoleタブにJavaScriptエラーが出ていない</td></tr>
+          <tr><td>9</td><td>ナビの全リンクが正しいセクションに飛ぶ</td></tr>
+          <tr><td>10</td><td>他人が読んで分かるコードになっている(インデント、適切な命名)</td></tr>
+        </table>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            複数人が同時に待機中なら、<strong>お互いのサイトをレビューし合う</strong>のがおすすめ!
+            「レビューする側」に回ると理解度が一気に上がりますし、実務のコードレビューの練習にもなります。
+            ベテランの方は、若手のコードレビュー役をぜひ買って出てください🌸
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 成果物の提出</div>
+          <p>完成したら、次章「GitHubで公開」の手順でリポジトリにアップし、公開URLを研修担当者に共有してください。<strong>作って終わりではなく、公開して人に見てもらうまでが本演習です。</strong></p>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="05-javascript.html">← 第5章</a>
+            <a href="07-publish.html">第7章 GitHubで公開 →</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

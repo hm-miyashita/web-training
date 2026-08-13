@@ -1,0 +1,167 @@
+/* 解答例:演習3(装飾)+ 演習4(レイアウト) */
+
+/* 色を一元管理(第3章ベテランコラム参照) */
+:root {
+  --main: #d6607e;
+  --main-light: #fdeef2;
+  --ink: #333;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 演習3-2:ページ全体の背景色と文字色 */
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+  line-height: 1.8;
+  background: #fff8fa;
+  color: var(--ink);
+}
+
+/* 演習4-2:Flexboxヘッダー(左右配置)
+   演習4(応用):stickyで上部固定 */
+.site-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--main);
+  color: #fff;
+}
+
+.site-header .site-name {
+  font-weight: bold;
+}
+
+.site-header nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 16px;
+}
+
+/* 演習4-1(初級):ホバー効果 */
+.site-header nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* 演習3(応用):角丸+影のカード */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* 演習3-3:h1に色と下線 */
+h1 {
+  color: var(--main);
+  border-bottom: 3px solid var(--main-light);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+h2 {
+  color: var(--main);
+  margin-bottom: 12px;
+}
+
+/* 演習3-4:テーブルに枠線と縞模様 */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #e5c3cd;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background: var(--main-light);
+}
+
+tr:nth-child(even) td {
+  background: #fdf5f7;
+}
+
+/* 演習4-1:趣味カードをGridで PC=3列 */
+.hobby-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.hobby-card {
+  background: var(--main-light);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.hobby-card h3 {
+  color: var(--main);
+  margin-bottom: 6px;
+}
+
+/* 演習5-1:開閉パネル(ふだんは隠す/openで表示) */
+.more-panel {
+  display: none;
+  background: var(--main-light);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 12px;
+}
+
+.more-panel.open {
+  display: block;
+}
+
+.greeting {
+  font-weight: bold;
+  color: var(--main);
+}
+
+button {
+  background: var(--main);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+ul {
+  padding-left: 1.5em;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+/* 演習4-1:スマホでは1列に(メディアクエリ) */
+@media (max-width: 600px) {
+  .hobby-grid {
+    grid-template-columns: 1fr;
+  }
+}

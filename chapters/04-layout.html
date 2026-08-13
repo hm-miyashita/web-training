@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 レイアウトとレスポンシブ | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第4章 レイアウトとレスポンシブ</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第4章 レイアウトとレスポンシブ</h1>
+        <p class="lead">要素を「横に並べる」「格子状に配置する」——ページの設計図を自在に描く技術を学びます。</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            昔は「要素を横に並べる」だけで一苦労だったんです(floatという茨の道がありました…)。
+            でも今は<strong>FlexboxとGrid</strong>という2つの強力な道具があります。ベテランの方、float時代の知識は一度忘れてください!今はもっとシンプルです🌸
+          </div>
+        </div>
+
+        <h2>4-1. Flexbox:一方向に並べる <span class="badge all">全員</span></h2>
+        <p>親要素に<code>display: flex;</code>と書くだけで、子要素が<strong>横一列</strong>に並びます。「並べる方向は1方向(横 or 縦)」なのがFlexboxの特徴です。</p>
+
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(display: flex を消すとどうなる?)</div>
+            <textarea spellcheck="false">&lt;style&gt;
+  .container {
+    display: flex;
+    gap: 10px;
+  }
+  .item {
+    background: #f8b8c6;
+    padding: 20px;
+    border-radius: 8px;
+  }
+&lt;/style&gt;
+
+&lt;div class="container"&gt;
+  &lt;div class="item"&gt;A&lt;/div&gt;
+  &lt;div class="item"&gt;B&lt;/div&gt;
+  &lt;div class="item"&gt;C&lt;/div&gt;
+&lt;/div&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <h3>Flexboxの主要プロパティ(親要素に書く)</h3>
+        <table>
+          <tr><th>プロパティ</th><th>役割</th><th>よく使う値</th></tr>
+          <tr>
+            <td><code>gap</code></td>
+            <td>子要素同士の間隔</td>
+            <td><code>gap: 16px;</code></td>
+          </tr>
+          <tr>
+            <td><code>justify-content</code></td>
+            <td><strong>並べる方向</strong>の揃え(横並びなら左右)</td>
+            <td><code>center</code> / <code>space-between</code>(両端揃え)</td>
+          </tr>
+          <tr>
+            <td><code>align-items</code></td>
+            <td><strong>交差する方向</strong>の揃え(横並びなら上下)</td>
+            <td><code>center</code>(上下中央)</td>
+          </tr>
+          <tr>
+            <td><code>flex-direction</code></td>
+            <td>並べる方向</td>
+            <td><code>row</code>(横・初期値)/ <code>column</code>(縦)</td>
+          </tr>
+          <tr>
+            <td><code>flex-wrap</code></td>
+            <td>入り切らない時に折り返すか</td>
+            <td><code>wrap</code>(折り返す)</td>
+          </tr>
+        </table>
+
+        <div class="note">
+          <span class="note-title">💡 「上下左右ど真ん中」の最短コード</span><br>
+          かつて難問だった「要素を画面中央に置く」は、Flexboxならこの3行です。丸暗記推奨!<br>
+          <code>display: flex; justify-content: center; align-items: center;</code>
+        </div>
+
+        <h2>4-2. Grid:格子状に並べる <span class="badge all">全員</span></h2>
+        <p>Flexboxが「1方向の列」なら、Gridは<strong>「行と列の表(格子)」</strong>でレイアウトします。カード一覧や、ページ全体の骨格づくりが得意です。</p>
+
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(3列を2列に変えてみよう)</div>
+            <textarea spellcheck="false">&lt;style&gt;
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .cell {
+    background: #fdeef2;
+    border: 2px solid #f8b8c6;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+  }
+&lt;/style&gt;
+
+&lt;div class="grid"&gt;
+  &lt;div class="cell"&gt;1&lt;/div&gt;
+  &lt;div class="cell"&gt;2&lt;/div&gt;
+  &lt;div class="cell"&gt;3&lt;/div&gt;
+  &lt;div class="cell"&gt;4&lt;/div&gt;
+  &lt;div class="cell"&gt;5&lt;/div&gt;
+  &lt;div class="cell"&gt;6&lt;/div&gt;
+&lt;/div&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <p><code>grid-template-columns: 1fr 1fr 1fr;</code> の <code>fr</code> は「fraction(分数)」の意味で、「余った幅を1:1:1で分ける」という指定です。<code>240px 1fr</code>と書けば「左は固定240px、右は残り全部」という、サイドバー付きレイアウトになります(この教材サイトがまさにその構造です)。</p>
+
+        <h3>FlexboxとGridの使い分け</h3>
+        <table>
+          <tr><th></th><th>Flexbox</th><th>Grid</th></tr>
+          <tr><td>得意な形</td><td>1方向の並び(ナビメニュー、ボタン列)</td><td>2次元の格子(カード一覧、ページ全体の骨格)</td></tr>
+          <tr><td>発想</td><td>中身のサイズに合わせて流す</td><td>先に枠を決めて中身を流し込む</td></tr>
+          <tr><td>迷ったら</td><td colspan="2">「行も列も意識する」ならGrid、それ以外はFlexboxでOK</td></tr>
+        </table>
+
+        <h2>4-3. レスポンシブデザイン <span class="badge all">全員</span></h2>
+        <p>日本のWebアクセスの<strong>約7割はスマートフォン</strong>です。PCでもスマホでも見やすいページにする技術がレスポンシブデザインで、柱は2つあります。</p>
+
+        <h3>① viewportメタタグ(おまじないではなく必須設定)</h3>
+        <pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></pre>
+        <p>これをheadに書かないと、スマホは「PC用の画面を縮小表示」してしまい、文字が豆粒になります。<strong>書き忘れ事故が非常に多い</strong>ので、HTMLの雛形に必ず含めましょう。</p>
+
+        <h3>② メディアクエリ:画面幅で条件分岐</h3>
+        <pre><code>/* 通常(PC)のスタイル */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;  /* PCでは3列 */
+}
+
+/* 画面幅が600px以下のとき、上書きする */
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;        /* スマホでは1列 */
+  }
+}</code></pre>
+        <p>切り替えの境界値(<strong>ブレークポイント</strong>)は、600px前後(スマホ)と1000px前後(タブレット)がよく使われます。</p>
+
+        <div class="note">
+          <span class="note-title">💡 DevToolsでスマホ表示を確認</span><br>
+          <code>F12</code> → 左上のスマホ/タブレットアイコン(デバイスツールバー)をクリックすると、各種スマホの画面サイズで表示確認ができます。
+          実機がなくても開発できるのはこの機能のおかげ。<strong>このページを今すぐスマホ表示にしてみましょう</strong>——サイドバーが上に回り込み、1カラムに変わります。それがまさにメディアクエリの仕事です。
+        </div>
+
+        <h2>4-4. positionプロパティ:特殊な配置 <span class="badge all">全員</span></h2>
+        <table>
+          <tr><th>値</th><th>動き</th><th>使いどころ</th></tr>
+          <tr><td><code>static</code></td><td>通常の流れ(初期値)</td><td>—</td></tr>
+          <tr><td><code>relative</code></td><td>本来の位置から相対的にずらす/absoluteの基準になる</td><td>微調整、基準づくり</td></tr>
+          <tr><td><code>absolute</code></td><td>基準(直近のrelative等)から絶対位置に置く</td><td>バッジ、吹き出しのしっぽ</td></tr>
+          <tr><td><code>fixed</code></td><td>画面に固定(スクロールしても動かない)</td><td>「トップへ戻る」ボタン</td></tr>
+          <tr><td><code>sticky</code></td><td>スクロールで所定位置に来たら貼り付く</td><td>固定ヘッダー(このサイトのヘッダーもsticky製)</td></tr>
+        </table>
+
+        <div class="column-advanced">
+          <div class="column-title">🎓 ベテラン向けコラム:メディアクエリ一辺倒からの脱却 <span class="badge advanced">ベテラン向け</span></div>
+          <p>レスポンシブの手法はここ数年で大きく進化しました。キャッチアップの要点は3つです。</p>
+          <ul>
+            <li><strong>コンテナクエリ(@container)</strong> … 「画面幅」ではなく「親要素の幅」で分岐できる。コンポーネント単位の設計と相性が良く、全モダンブラウザ対応済み。「サイドバーに置いても本文に置いても勝手に最適化されるカード」が実現可能に</li>
+            <li><strong>clamp()による流体デザイン</strong> … <code>font-size: clamp(1rem, 2.5vw, 1.5rem);</code> のように最小・推奨・最大を1行で書き、ブレークポイントなしで滑らかにサイズが変わる</li>
+            <li><strong>aspect-ratio、min()/max()、subgrid</strong> … 「JSで計算していたレイアウト」がCSSだけで完結する場面が急増。Grid内の入れ子の行揃えはsubgridで解決</li>
+          </ul>
+          <p>「ブレークポイントを何個も書いて微調整」から「そもそも壊れない流体レイアウトを設計する」への発想転換が、モダンCSSの潮流です。</p>
+        </div>
+
+        <h2>確認クイズ</h2>
+
+        <div class="quiz">
+          <p class="quiz-q">Q1. 子要素を横一列に並べる最も簡単な方法は、親要素に何と書く?</p>
+          <label><input type="radio" name="q1" value="a"> display: block;</label>
+          <label><input type="radio" name="q1" value="b"> display: flex;</label>
+          <label><input type="radio" name="q1" value="c"> float: left;</label>
+          <button class="quiz-check" data-name="q1" data-answer="b" data-explain="display: flex; の1行で子要素が横に並びます。floatによるレイアウトは過去の手法です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q2. 「カードを PC=3列 / スマホ=1列」に切り替える仕組みはどれ?</p>
+          <label><input type="radio" name="q2" value="a"> メディアクエリ(@media)</label>
+          <label><input type="radio" name="q2" value="b"> 疑似クラス(:hover)</label>
+          <label><input type="radio" name="q2" value="c"> !important</label>
+          <button class="quiz-check" data-name="q2" data-answer="a" data-explain="@media (max-width: 600px) { … } のように、画面幅を条件にスタイルを上書きします。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q3. grid-template-columns: 240px 1fr; の意味は?</p>
+          <label><input type="radio" name="q3" value="a"> 240pxの列を1つだけ作る</label>
+          <label><input type="radio" name="q3" value="b"> 左240px固定+右は残り全部、の2列</label>
+          <label><input type="radio" name="q3" value="c"> 240個の列を作る</label>
+          <button class="quiz-check" data-name="q3" data-answer="b" data-explain="frは『余りをその比率で分ける』単位。固定幅と組み合わせるとサイドバー型レイアウトになります。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 演習 4:自己紹介ページをレイアウトしよう</div>
+          <ol>
+            <li>趣味の一覧を「カード(角丸・影付きの箱)」に変え、Gridで<strong>PC=3列、スマホ=1列</strong>に並べる</li>
+            <li>ページ上部に「名前+ナビメニュー」のヘッダーを作り、Flexboxで<strong>名前は左、メニューは右</strong>に配置する(<code>justify-content: space-between</code>)</li>
+            <li>DevToolsのデバイスツールバーで、iPhoneサイズでも崩れないことを確認する</li>
+            <li>(応用)ヘッダーを<code>position: sticky;</code>で画面上部に固定する</li>
+          </ol>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="03-css.html">← 第3章</a>
+            <a href="05-javascript.html">第5章 JavaScript →</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

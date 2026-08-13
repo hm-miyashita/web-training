@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山田太郎の自己紹介</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 演習4:Flexboxで「名前は左、メニューは右」のヘッダー -->
+  <header class="site-header">
+    <div class="site-name">山田太郎のページ</div>
+    <nav>
+      <a href="#hobby">趣味</a>
+      <a href="#career">経歴</a>
+      <a href="#links">リンク</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 演習2:h1で名前 -->
+    <section class="card">
+      <h1>山田 太郎</h1>
+      <p>はじめまして。システムエンジニアの山田太郎です。</p>
+      <!-- 演習5-2:時刻に応じてあいさつが変わる欄 -->
+      <p id="greeting" class="greeting"></p>
+
+      <!-- 演習5-1:開閉UI(クラス切替パターン) -->
+      <button id="more-btn">もっと見る ▼</button>
+      <div id="more-panel" class="more-panel">
+        <p>出身は東京都。前職は営業でしたが、独学でプログラミングを学びSEに転職しました。
+        最近はフロントエンド技術に興味があり、この研修でWeb制作を勉強中です。</p>
+      </div>
+    </section>
+
+    <!-- 演習2:趣味の一覧 → 演習4:Gridカード化(PC3列/スマホ1列) -->
+    <section class="card" id="hobby">
+      <h2>趣味</h2>
+      <div class="hobby-grid">
+        <div class="hobby-card">
+          <h3>読書</h3>
+          <p>技術書からミステリーまで月5冊ペース。</p>
+        </div>
+        <div class="hobby-card">
+          <h3>ラーメン巡り</h3>
+          <p>年間100杯。家系が特に好きです。</p>
+        </div>
+        <div class="hobby-card">
+          <h3>ランニング</h3>
+          <p>週2回、5kmずつ。目標はフルマラソン完走。</p>
+        </div>
+      </div>
+      <!-- 演習5-3(応用):いいねボタン -->
+      <button id="like-btn">👍 いいね <span id="like-count">0</span></button>
+    </section>
+
+    <!-- 演習2:経歴テーブル -->
+    <section class="card" id="career">
+      <h2>経歴</h2>
+      <table>
+        <tr>
+          <th>年</th>
+          <th>出来事</th>
+        </tr>
+        <tr>
+          <td>2020年</td>
+          <td>大学卒業、メーカーに営業職として入社</td>
+        </tr>
+        <tr>
+          <td>2023年</td>
+          <td>独学でプログラミング学習を開始</td>
+        </tr>
+        <tr>
+          <td>2024年</td>
+          <td>SEとして現職に入社</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- 演習2:好きなサイトへのリンク -->
+    <section class="card" id="links">
+      <h2>よく見るサイト</h2>
+      <ul>
+        <li><a href="https://developer.mozilla.org/ja/" target="_blank" rel="noopener">MDN Web Docs</a> — Web技術の辞書</li>
+        <li><a href="https://zenn.dev/" target="_blank" rel="noopener">Zenn</a> — 技術記事</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 Taro Yamada
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

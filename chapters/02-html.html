@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 HTML基礎 | 0からのホームページ作成研修</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/img/sakura.png">
+</head>
+<body>
+
+  <header class="site-header">
+    <img src="../assets/img/sakura.png" alt="マスコットのさくらちゃん" class="logo">
+    <div class="title">
+      0からのホームページ作成研修
+      <small>第2章 HTML基礎</small>
+    </div>
+    <a href="../index.html" class="home-link">トップへ</a>
+  </header>
+
+  <div class="layout">
+
+    <nav class="sidebar">
+      <h2>カリキュラム</h2>
+      <ol>
+        <li><a href="01-web-basics.html">Webの仕組み</a></li>
+        <li><a href="02-html.html">HTML基礎</a></li>
+        <li><a href="03-css.html">CSS基礎</a></li>
+        <li><a href="04-layout.html">レイアウトとレスポンシブ</a></li>
+        <li><a href="05-javascript.html">JavaScript基礎</a></li>
+        <li><a href="06-practice.html">総合演習</a></li>
+        <li><a href="07-publish.html">GitHubで公開</a></li>
+        <li><a href="08-trends.html">最新トレンド</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section>
+        <h1>第2章 HTML基礎</h1>
+        <p class="lead">ページの「骨組み」を作る言語、HTMLを学びます。この章から実際に手を動かします!</p>
+
+        <div class="sakura-says">
+          <img src="../assets/img/sakura.png" alt="さくらちゃん">
+          <div class="bubble">
+            <span class="name">さくらちゃん</span>
+            この章には<strong>「ライブエディタ」</strong>が登場します。左側のコードを書き換えると、右側に結果がすぐ表示されるので、
+            どんどん書き換えて実験してくださいね。<strong>壊しても誰にも迷惑がかからないのが練習環境のいいところ</strong>です!
+          </div>
+        </div>
+
+        <h2>2-1. HTMLとタグ <span class="badge basic">基礎</span></h2>
+        <p>HTML(HyperText Markup Language)は、文章に「これは見出し」「これは段落」という<strong>意味の印(マーク)を付けていく</strong>言語です。印付けには<strong>タグ</strong>を使います。</p>
+        <pre><code>&lt;h1&gt;こんにちは&lt;/h1&gt;
+└┬┘           └─┬─┘
+開始タグ        終了タグ(スラッシュ付き)
+
+&lt;h1&gt; 〜 &lt;/h1&gt; で囲まれた全体を「要素」と呼びます</code></pre>
+        <p>実際に触ってみましょう。左のコードを編集すると右に即反映されます。</p>
+
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(編集できます)</div>
+            <textarea spellcheck="false">&lt;h1&gt;私の自己紹介&lt;/h1&gt;
+&lt;p&gt;はじめまして。SEの山田です。&lt;/p&gt;
+&lt;p&gt;好きな食べ物は&lt;strong&gt;ラーメン&lt;/strong&gt;です。&lt;/p&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <h2>2-2. HTML文書の全体構造 <span class="badge basic">基礎</span></h2>
+        <p>1つのHTMLファイルは、必ず次の「定型」から始まります。VS Codeで新しいファイルを作り、<code>index.html</code>という名前で保存して、以下を打ち込んでみましょう(写経推奨!)。</p>
+        <span class="code-title">index.html</span>
+        <pre><code>&lt;!DOCTYPE html&gt;                    ←「これはHTML5文書です」という宣言
+&lt;html lang="ja"&gt;                   ← 文書全体の入れ物(lang="ja"で日本語と明示)
+&lt;head&gt;                             ← ページの「設定情報」置き場(画面には出ない)
+  &lt;meta charset="UTF-8"&gt;           ← 文字コード。これがないと文字化けの原因に!
+  &lt;title&gt;私のページ&lt;/title&gt;        ← ブラウザのタブに表示されるタイトル
+&lt;/head&gt;
+&lt;body&gt;                             ← 画面に表示される内容はすべてこの中に書く
+  &lt;h1&gt;こんにちは!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <div class="note">
+          <span class="note-title">💡 表示のしかた</span><br>
+          保存した<code>index.html</code>をダブルクリックすると、ブラウザで開けます。コードを直したら、上書き保存 → ブラウザで<code>F5</code>(再読み込み)。この繰り返しが開発の基本サイクルです。
+        </div>
+
+        <h2>2-3. よく使うタグ図鑑 <span class="badge all">全員</span></h2>
+        <table>
+          <tr>
+            <th>タグ</th>
+            <th>意味</th>
+            <th>ポイント</th>
+          </tr>
+          <tr>
+            <td><code>&lt;h1&gt;</code>〜<code>&lt;h6&gt;</code></td>
+            <td>見出し(hはheading)</td>
+            <td>h1が最重要。数字は「見た目の大きさ」ではなく「階層」</td>
+          </tr>
+          <tr>
+            <td><code>&lt;p&gt;</code></td>
+            <td>段落(paragraph)</td>
+            <td>文章のかたまりごとに使う</td>
+          </tr>
+          <tr>
+            <td><code>&lt;a&gt;</code></td>
+            <td>リンク(anchor)</td>
+            <td><code>href</code>属性で行き先を指定</td>
+          </tr>
+          <tr>
+            <td><code>&lt;img&gt;</code></td>
+            <td>画像(image)</td>
+            <td><code>src</code>で画像の場所、<code>alt</code>で代替テキスト。終了タグ不要</td>
+          </tr>
+          <tr>
+            <td><code>&lt;ul&gt;</code> / <code>&lt;ol&gt;</code> / <code>&lt;li&gt;</code></td>
+            <td>箇条書き / 番号付きリスト / 項目</td>
+            <td>ul=unordered、ol=ordered</td>
+          </tr>
+          <tr>
+            <td><code>&lt;table&gt;</code> / <code>&lt;tr&gt;</code> / <code>&lt;th&gt;</code> / <code>&lt;td&gt;</code></td>
+            <td>表 / 行 / 見出しセル / データセル</td>
+            <td>この表もtableタグ製です</td>
+          </tr>
+          <tr>
+            <td><code>&lt;div&gt;</code> / <code>&lt;span&gt;</code></td>
+            <td>意味を持たないグループ化用の箱</td>
+            <td>divはブロック、spanは行内。CSSと組み合わせて使う</td>
+          </tr>
+          <tr>
+            <td><code>&lt;br&gt;</code></td>
+            <td>改行</td>
+            <td>多用は禁物。段落は<code>&lt;p&gt;</code>で分ける</td>
+          </tr>
+        </table>
+
+        <h3>属性:タグへの追加情報</h3>
+        <p>開始タグの中には<strong>属性</strong>(<code>名前="値"</code>の形)を書けます。</p>
+        <pre><code>&lt;a href="https://www.google.com"&gt;Googleへ&lt;/a&gt;
+   └────────────┬────────────┘
+     href属性:リンクの行き先を指定
+
+&lt;img src="sakura.png" alt="桜のマスコット"&gt;
+     └──────┬──────┘  └────────┬────────┘
+      画像ファイルの場所   画像が表示できない時や
+                        音声読み上げで使われる説明文</code></pre>
+
+        <p>リンク・画像・リストをライブエディタで試してみましょう。</p>
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(編集できます)</div>
+            <textarea spellcheck="false">&lt;h2&gt;好きな技術ランキング&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;JavaScript&lt;/li&gt;
+  &lt;li&gt;Python&lt;/li&gt;
+  &lt;li&gt;SQL&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+  詳しくは
+  &lt;a href="https://developer.mozilla.org/ja/"&gt;MDN&lt;/a&gt;
+  で調べよう
+&lt;/p&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+
+        <h2>2-4. フォーム:ユーザーからの入力を受け取る <span class="badge all">全員</span></h2>
+        <p>お問い合わせページなどで使う入力欄も、HTMLだけで作れます。</p>
+        <div class="live-editor">
+          <div>
+            <div class="live-editor-label">✏️ コード(編集できます)</div>
+            <textarea spellcheck="false">&lt;form&gt;
+  &lt;label&gt;お名前:
+    &lt;input type="text" placeholder="山田太郎"&gt;
+  &lt;/label&gt;
+  &lt;br&gt;&lt;br&gt;
+  &lt;label&gt;お問い合わせ内容:&lt;/label&gt;
+  &lt;br&gt;
+  &lt;textarea rows="3"&gt;&lt;/textarea&gt;
+  &lt;br&gt;&lt;br&gt;
+  &lt;button type="submit"&gt;送信&lt;/button&gt;
+&lt;/form&gt;</textarea>
+          </div>
+          <div>
+            <div class="live-editor-label">🖥️ 表示結果</div>
+            <iframe title="プレビュー"></iframe>
+          </div>
+        </div>
+        <p><code>input</code>の<code>type</code>属性を<code>email</code>、<code>date</code>、<code>number</code>、<code>color</code>などに変えると入力欄の性質が変わります。上のエディタで試してみてください。</p>
+
+        <h2>2-5. セマンティックHTML:意味のある骨組み <span class="badge all">全員</span></h2>
+        <p>なんでも<code>&lt;div&gt;</code>で作ることもできますが、現代のHTMLでは<strong>「その部分が何なのか」を意味で表すタグ</strong>を使うのが正解です。</p>
+        <pre><code>&lt;body&gt;
+  &lt;header&gt;   ← ページ上部(ロゴ、サイト名など)
+    &lt;nav&gt;    ← ナビゲーション(メニュー)
+  &lt;/header&gt;
+  &lt;main&gt;     ← そのページの主内容(1ページに1つ)
+    &lt;article&gt; ← それ単体で完結する記事
+    &lt;section&gt; ← 意味のあるまとまり・区切り
+    &lt;aside&gt;   ← 補足・サイドバー
+  &lt;/main&gt;
+  &lt;footer&gt;   ← ページ下部(著作権表示など)
+&lt;/body&gt;</code></pre>
+        <p>なぜ意味を持たせるのか?理由は3つあります。</p>
+        <ul>
+          <li><strong>検索エンジン(SEO)</strong> … Googleがページの構造を正しく理解できる</li>
+          <li><strong>アクセシビリティ</strong> … スクリーンリーダー(音声読み上げ)利用者が「メニューに飛ぶ」「本文に飛ぶ」といった操作をできるようになる</li>
+          <li><strong>保守性</strong> … 他人(3ヶ月後の自分を含む)がコードを読んだとき、構造がすぐ分かる</li>
+        </ul>
+
+        <div class="column-advanced">
+          <div class="column-title">🎓 ベテラン向けコラム:divスープからの卒業は終わったか <span class="badge advanced">ベテラン向け</span></div>
+          <p>セマンティックHTMLの重要性は、近年アクセシビリティ法制の面から再注目されています。日本でも2024年4月施行の改正障害者差別解消法により、民間事業者の合理的配慮が義務化され、公共系・大手企業案件では<strong>WCAG(Web Content Accessibility Guidelines)準拠が要件に明記される</strong>ケースが増えました。</p>
+          <p>また、<code>&lt;dialog&gt;</code>、<code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code>、<code>&lt;search&gt;</code>など「昔はJSで自作していたUI」がHTML標準要素になっています。モーダルをdivとJSで自作する前に、まず標準要素で足りないか確認するのが現代流です。</p>
+        </div>
+
+        <h2>確認クイズ</h2>
+
+        <div class="quiz">
+          <p class="quiz-q">Q1. 画面に表示される内容を書く場所はどこ?</p>
+          <label><input type="radio" name="q1" value="a"> &lt;head&gt;の中</label>
+          <label><input type="radio" name="q1" value="b"> &lt;body&gt;の中</label>
+          <label><input type="radio" name="q1" value="c"> &lt;title&gt;の中</label>
+          <button class="quiz-check" data-name="q1" data-answer="b" data-explain="headは設定情報、bodyが表示内容です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q2. imgタグのalt属性の役割として最も適切なのは?</p>
+          <label><input type="radio" name="q2" value="a"> 画像の表示サイズを指定する</label>
+          <label><input type="radio" name="q2" value="b"> 画像が表示できない時や音声読み上げで使う説明文</label>
+          <label><input type="radio" name="q2" value="c"> 画像の読み込み速度を上げる</label>
+          <button class="quiz-check" data-name="q2" data-answer="b" data-explain="altはアクセシビリティとSEOの両面で重要です。意味のある画像には必ず書きましょう。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="quiz">
+          <p class="quiz-q">Q3. ページの主内容を囲む、1ページに1つだけ使うセマンティックタグは?</p>
+          <label><input type="radio" name="q3" value="a"> &lt;main&gt;</label>
+          <label><input type="radio" name="q3" value="b"> &lt;div&gt;</label>
+          <label><input type="radio" name="q3" value="c"> &lt;section&gt;</label>
+          <button class="quiz-check" data-name="q3" data-answer="a" data-explain="mainはページの主内容を示し、1ページに1つだけ。divは意味を持たない汎用の箱です。">答え合わせ</button>
+          <p class="quiz-result"></p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-title">📝 演習 2:自己紹介ページを作ろう</div>
+          <p>VS Codeで<code>jikoshokai.html</code>を新規作成し、以下を満たすページを<strong>何も見ずに</strong>書いてみましょう(詰まったらこの章を見返してOK)。</p>
+          <ol>
+            <li>正しい文書構造(DOCTYPE、html、head、body)がある</li>
+            <li>名前を<code>&lt;h1&gt;</code>で、趣味の一覧を<code>&lt;ul&gt;</code>で書く</li>
+            <li>好きなWebサイトへのリンクを1つ以上入れる</li>
+            <li>経歴を<code>&lt;table&gt;</code>で書く(年 / 出来事 の2列)</li>
+            <li>(余裕があれば)header / main / footer で構造化する</li>
+          </ol>
+          <p>※ リポジトリの <code>exercises/starter</code> フォルダにひな形、<code>exercises/answer</code> に解答例があります。まずは見ずに挑戦!</p>
+        </div>
+
+        <div class="chapter-footer">
+          <button class="btn-done">この章を完了にする</button>
+          <div class="pager">
+            <a href="01-web-basics.html">← 第1章</a>
+            <a href="03-css.html">第3章 CSS基礎 →</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    0からのホームページ作成研修 — 社内研修用教材
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
