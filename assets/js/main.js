@@ -18,10 +18,12 @@ const CHAPTERS = [
   { file: "08-trends.html", title: "最新トレンド" },
 ];
 
-const PROGRESS_PREFIX = "webTrainingProgress"; // 進捗(受講者ごとに分ける)
-const USER_KEY = "webTrainingUser";            // いま受講中の人
-const LOG_KEY = "webTrainingLog";              // 受講記録のブラウザ内ミラー
-const LINES_PER_FILE = 500;                    // 1テキストあたりの行数上限
+const PROGRESS_PREFIX = "webTrainingProgress";     // 進捗(受講者ごとに分ける)
+const USER_KEY = "webTrainingUser";                // いま受講中の人
+const LOG_KEY = "webTrainingLog";                  // 受講記録(「何月何日 名前」の配列)
+const EXPORT_STATE_KEY = "webTrainingExportState"; // 自動ダウンロードの状態
+const LAST_RECORD_DATE_KEY = "webTrainingLastRecordDate"; // 最後に記録した実日付
+const LINES_PER_FILE = 200;                        // 1テキストあたりの行数上限
 
 // ---- 受講者の読み書き ----
 
@@ -64,17 +66,17 @@ function saveProgress(progress) {
 }
 
 // ============================================================
-// 受講記録(テキストファイルへの記録)
+// 受講記録
 //   ・「何月何日 名前」を1行として記録する
 //   ・同じ日付+名前の行が既にあれば記録しない(重複防止)
-//   ・1テキスト500行を超えたら kenshu-log-2.txt … と次のファイルへ
-//   ・ファイル書き込みには File System Access API(Chrome/Edge)を
-//     使用。保存先フォルダを一度指定すると、以降はそこに追記される。
-//   ・未設定・非対応時はブラウザ内(localStorage)に記録し、
-//     同じ形式のテキストをダウンロードで取り出せる。
+//   ・毎日23:59(日付が変わる1分前)に、記録をテキストファイル
+//     (kenshu-log-1.txt …)として自動ダウンロードする
+//   ・1テキストは200行まで。超えたぶんは kenshu-log-2.txt … に分かれる
+//   ・23:59にページが閉じていた場合は、次にページを開いたときに
+//     未保存分をダウンロードする(取りこぼし防止)
 // ============================================================
 
-// ---- ブラウザ内ミラーの読み書き ----
+// ---- 記録の読み書き ----
 
 function loadLog() {
   try {
@@ -86,38 +88,6 @@ function loadLog() {
 
 function saveLog(lines) {
   localStorage.setItem(LOG_KEY, JSON.stringify(lines));
-}
-
-// ---- 保存先フォルダのハンドルを覚えておく(IndexedDB)----
-
-function idbOpen() {
-  return new Promise(function (resolve, reject) {
-    const req = indexedDB.open("webTrainingDB", 1);
-    req.onupgradeneeded = function () {
-      req.result.createObjectStore("handles");
-    };
-    req.onsuccess = function () { resolve(req.result); };
-    req.onerror = function () { reject(req.error); };
-  });
-}
-
-async function idbGet(key) {
-  const db = await idbOpen();
-  return new Promise(function (resolve, reject) {
-    const rq = db.transaction("handles").objectStore("handles").get(key);
-    rq.onsuccess = function () { resolve(rq.result); };
-    rq.onerror = function () { reject(rq.error); };
-  });
-}
-
-async function idbSet(key, val) {
-  const db = await idbOpen();
-  return new Promise(function (resolve, reject) {
-    const tx = db.transaction("handles", "readwrite");
-    tx.objectStore("handles").put(val, key);
-    tx.oncomplete = function () { resolve(); };
-    tx.onerror = function () { reject(tx.error); };
-  });
 }
 
 // ---- 日付ユーティリティ ----
@@ -135,71 +105,75 @@ function toJpDate(inputValue) {
   return Number(p[1]) + "月" + Number(p[2]) + "日";
 }
 
-// ---- テキストファイルへの追記(500行でロールオーバー)----
+// ---- 自動ダウンロード ----
 
-async function appendLineToFolder(line) {
-  const dir = await idbGet("logDir");
-  if (!dir) {
-    return { saved: false, reason: "保存先フォルダが未設定" };
+function getExportState() {
+  try {
+    return JSON.parse(localStorage.getItem(EXPORT_STATE_KEY)) || { lastExportedCount: 0, lastExportDate: "" };
+  } catch (e) {
+    return { lastExportedCount: 0, lastExportDate: "" };
+  }
+}
+
+function setExportState(state) {
+  localStorage.setItem(EXPORT_STATE_KEY, JSON.stringify(state));
+}
+
+// 記録を200行ずつのテキストに分けてダウンロードする。
+// fromCount(前回保存済みの行数)を渡すと、新しい行を含むファイルだけを保存する。
+function downloadLogFiles(fromCount) {
+  const lines = loadLog();
+  if (lines.length === 0) return 0;
+
+  const startFile = Math.floor(fromCount / LINES_PER_FILE); // 途中まで保存済みのファイルは最新版で保存し直す
+  const totalFiles = Math.ceil(lines.length / LINES_PER_FILE);
+
+  for (let f = startFile; f < totalFiles; f++) {
+    const chunk = lines.slice(f * LINES_PER_FILE, (f + 1) * LINES_PER_FILE);
+    const blob = new Blob([chunk.join("\n") + "\n"], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "kenshu-log-" + (f + 1) + ".txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  return totalFiles - startFile;
+}
+
+// 未保存の記録があればダウンロードして、保存済み状態を更新する
+function autoExportIfNeeded() {
+  const lines = loadLog();
+  const state = getExportState();
+  if (lines.length === 0 || lines.length <= state.lastExportedCount) {
+    return false; // 新しい記録なし
+  }
+  downloadLogFiles(state.lastExportedCount);
+  setExportState({ lastExportedCount: lines.length, lastExportDate: todayInputValue() });
+  return true;
+}
+
+function setupAutoExport() {
+  // ① 取りこぼし防止:前日以前の未保存記録があれば、いまダウンロードする
+  const lastRecordDate = localStorage.getItem(LAST_RECORD_DATE_KEY);
+  const state = getExportState();
+  if (lastRecordDate && lastRecordDate < todayInputValue() &&
+      loadLog().length > state.lastExportedCount) {
+    autoExportIfNeeded();
   }
 
-  let perm = await dir.queryPermission({ mode: "readwrite" });
-  if (perm !== "granted") {
-    perm = await dir.requestPermission({ mode: "readwrite" });
-  }
-  if (perm !== "granted") {
-    return { saved: false, reason: "フォルダへのアクセスが許可されませんでした" };
-  }
-
-  // フォルダ内の kenshu-log-N.txt をすべて集める
-  const files = [];
-  for await (const entry of dir.values()) {
-    if (entry.kind !== "file") continue;
-    const m = entry.name.match(/^kenshu-log-(\d+)\.txt$/);
-    if (m) files.push({ n: Number(m[1]), handle: entry });
-  }
-  files.sort(function (a, b) { return a.n - b.n; });
-
-  // 全ファイルを走査して、同じ「日付 名前」の行がないか確認(重複防止)
-  let lastN = 0;
-  let lastHandle = null;
-  let lastText = "";
-  for (const f of files) {
-    const text = await (await f.handle.getFile()).text();
-    const exists = text.split(/\r?\n/).some(function (l) {
-      return l.trim() === line;
-    });
-    if (exists) {
-      return { saved: true, dup: true, file: "kenshu-log-" + f.n + ".txt" };
+  // ② 毎日23:59(日付が変わる1分前)に自動ダウンロード
+  function scheduleNext() {
+    const now = new Date();
+    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 0);
+    if (target <= now) {
+      target.setDate(target.getDate() + 1); // 今日の23:59を過ぎていたら明日の23:59
     }
-    lastN = f.n;
-    lastHandle = f.handle;
-    lastText = text;
+    setTimeout(function () {
+      autoExportIfNeeded();
+      scheduleNext(); // 翌日ぶんを予約し直す
+    }, target.getTime() - now.getTime());
   }
-
-  // 追記先を決める:最後のファイルが500行に達していたら次の番号を新規作成
-  const lastLines = lastText.split(/\r?\n/).filter(function (l) {
-    return l.trim() !== "";
-  });
-  let targetHandle = lastHandle;
-  let targetName = "kenshu-log-" + lastN + ".txt";
-  let baseText = lastText;
-
-  if (!lastHandle || lastLines.length >= LINES_PER_FILE) {
-    targetName = "kenshu-log-" + (lastN + 1) + ".txt";
-    targetHandle = await dir.getFileHandle(targetName, { create: true });
-    baseText = "";
-  }
-
-  if (baseText && !baseText.endsWith("\n")) {
-    baseText += "\n";
-  }
-
-  const writable = await targetHandle.createWritable();
-  await writable.write(baseText + line + "\n");
-  await writable.close();
-
-  return { saved: true, dup: false, file: targetName };
+  scheduleNext();
 }
 
 // ---- トップページ:受講記録UI ----
@@ -218,59 +192,8 @@ function setupAttendance() {
     nameInput.value = user.name;
   }
 
-  const fsSupported = !!window.showDirectoryPicker;
-  const folderBtn = document.querySelector("#att-folder");
-  const folderStatus = document.querySelector("#att-folder-status");
-
-  // 保存先フォルダの設定状態を表示
-  if (fsSupported) {
-    idbGet("logDir").then(function (dir) {
-      if (dir && folderStatus) {
-        folderStatus.textContent = "設定済み:「" + dir.name + "」フォルダに記録します";
-      }
-    }).catch(function () { /* 未設定のままでOK */ });
-  } else if (folderStatus) {
-    folderStatus.textContent =
-      "このブラウザはファイル自動書き込みに未対応のため、記録はブラウザ内に保存されます。「記録テキストをダウンロード」で取り出してください。";
-    if (folderBtn) folderBtn.style.display = "none";
-  }
-
-  // 保存先フォルダを選ぶ(管理者向け・最初に一度だけ)
-  if (folderBtn && fsSupported) {
-    folderBtn.addEventListener("click", async function () {
-      try {
-        const dir = await window.showDirectoryPicker({ mode: "readwrite" });
-        await idbSet("logDir", dir);
-        folderStatus.textContent = "設定済み:「" + dir.name + "」フォルダに記録します";
-      } catch (e) {
-        /* キャンセル時は何もしない */
-      }
-    });
-  }
-
-  // 記録テキストのダウンロード(ブラウザ内ミラーから、500行ずつに分割)
-  const dlBtn = document.querySelector("#att-download");
-  if (dlBtn) {
-    dlBtn.addEventListener("click", function () {
-      const lines = loadLog();
-      if (lines.length === 0) {
-        status.textContent = "まだ記録がありません。";
-        return;
-      }
-      for (let i = 0; i < lines.length; i += LINES_PER_FILE) {
-        const chunk = lines.slice(i, i + LINES_PER_FILE);
-        const blob = new Blob([chunk.join("\n") + "\n"], { type: "text/plain" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "kenshu-log-" + (Math.floor(i / LINES_PER_FILE) + 1) + ".txt";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }
-    });
-  }
-
   // 「開始/再開する」ボタン
-  startBtn.addEventListener("click", async function () {
+  startBtn.addEventListener("click", function () {
     const name = nameInput.value.trim();
     const dateValue = dateInput.value || todayInputValue();
 
@@ -288,36 +211,20 @@ function setupAttendance() {
     setUser({ name: name });
     refreshTopProgress();
 
+    // 「何月何日 名前」の1行を記録(同じ日付+名前は重複させない)
     const line = toJpDate(dateValue) + " " + name;
-
-    // ① ブラウザ内ミラーに記録(同じ日付+名前は重複させない)
     const log = loadLog();
-    const dupInMirror = log.indexOf(line) !== -1;
-    if (!dupInMirror) {
+    let recordMsg;
+    if (log.indexOf(line) !== -1) {
+      recordMsg = "(本日の記録は既にあるため、二重には記録していません)";
+    } else {
       log.push(line);
       saveLog(log);
+      localStorage.setItem(LAST_RECORD_DATE_KEY, todayInputValue());
+      recordMsg = "を記録しました(テキストは毎日23:59に自動ダウンロードされます)";
     }
 
-    // ② テキストファイルに記録(保存先フォルダ設定済みの場合)
-    let fileMsg = "";
-    if (fsSupported) {
-      try {
-        const result = await appendLineToFolder(line);
-        if (result.saved && result.dup) {
-          fileMsg = "(" + result.file + " に本日の記録が既にあるため追記しませんでした)";
-        } else if (result.saved) {
-          fileMsg = "(" + result.file + " に記録しました)";
-        } else {
-          fileMsg = "(" + result.reason + "のため、ブラウザ内にのみ記録しました)";
-        }
-      } catch (e) {
-        fileMsg = "(ファイル書き込みに失敗したため、ブラウザ内にのみ記録しました)";
-      }
-    } else {
-      fileMsg = "(ブラウザ内に記録しました。テキストはダウンロードで取り出せます)";
-    }
-
-    // ③ 途中再開の案内:最初の未完了の章へ誘導する
+    // 途中再開の案内:最初の未完了の章へ誘導する
     const progress = loadProgress();
     const doneCount = CHAPTERS.filter(function (c) { return progress[c.file]; }).length;
     let resumeMsg;
@@ -335,7 +242,7 @@ function setupAttendance() {
 
     status.className = "att-status ok";
     status.innerHTML =
-      "ようこそ、" + name + "さん!「" + line + "」" + fileMsg + "<br>" + resumeMsg;
+      "ようこそ、" + name + "さん!「" + line + "」" + recordMsg + "<br>" + resumeMsg;
   });
 }
 
@@ -478,6 +385,7 @@ function setupLiveEditors() {
 
 document.addEventListener("DOMContentLoaded", function () {
   setupAttendance();
+  setupAutoExport();
   setupSidebar();
   setupDoneButton();
   refreshTopProgress();

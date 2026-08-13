@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>0からのホームページ作成研修 | トップ</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=2">
+  <link rel="stylesheet" href="assets/css/style.css?v=3">
   <link rel="icon" href="assets/img/sakura.png">
 </head>
 <body>
@@ -64,14 +64,7 @@
         <p id="att-status" class="att-status"></p>
         <p>途中で中断した場合も、次回ここで<strong>日付と名前を入力すれば続きの章から再開</strong>できます(同じ日付・同じ名前の記録が既にある場合、二重には記録されません)。</p>
 
-        <details class="admin-tools">
-          <summary>🔧 管理者向け:記録テキストの設定</summary>
-          <p>受講記録は「保存先フォルダ」内の <code>kenshu-log-1.txt</code> に1行ずつ追記され、<strong>500行に達すると自動的に <code>kenshu-log-2.txt</code> へ切り替わります</strong>。
-          最初に一度、保存先フォルダ(社内共有フォルダも可)を設定してください。未設定の場合、記録はこのブラウザ内に保存され、下のボタンで同じ形式のテキストとして取り出せます。</p>
-          <button id="att-folder" type="button">記録の保存先フォルダを設定</button>
-          <button id="att-download" type="button">記録テキストをダウンロード</button>
-          <p id="att-folder-status" class="att-folder-status"></p>
-        </details>
+        <p class="auto-export-note">📄 受講記録は、<strong>日付が変わる1分前(23:59)に <code>kenshu-log-1.txt</code> として毎日自動ダウンロード</strong>されます(1テキスト200行まで。超えたぶんは <code>kenshu-log-2.txt</code> へ)。23:59にこのページを閉じていた場合は、次にページを開いたときに未保存分がダウンロードされます。</p>
 
         <h2>この研修のゴール</h2>
         <ul>
@@ -216,6 +209,6 @@
     0からのホームページ作成研修 — 社内研修用教材
   </footer>
 
-  <script src="assets/js/main.js?v=2"></script>
+  <script src="assets/js/main.js?v=3"></script>
 </body>
 </html>
